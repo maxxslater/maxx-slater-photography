@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Kaushan+Script&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-script: 'Kaushan Script', cursive;
+}
+
+/* Smooth scrolling & prevent horizontal overflow during transitions */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: rgba(251, 191, 36, 0.3);
+  color: #fff;
+}
