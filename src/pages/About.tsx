@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 /* Replace this empty string with your image path, e.g. "/images/portrait.jpg" */
-const PORTRAIT_URL = "";
+const PORTRAIT_URL = "/images/portrait.jpg";
 
 export default function About() {
   return (
