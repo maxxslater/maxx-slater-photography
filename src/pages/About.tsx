@@ -31,9 +31,11 @@ export default function About() {
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                 <circle cx="12" cy="13" r="4" />
               </svg>
-              <p className="text-sm tracking-[0.2em] uppercase text-neutral-600 font-light">
-                Your Photo Here
-              </p>
+            <img
+              src="C:\Users\Andrew\Documents\maxx-slater-photography\src\components\aaa.jpg"
+              alt="Maxx Slater — photographer portrait"
+              className="h-full w-full object-cover"
+            />
             </div>
           )}
 
