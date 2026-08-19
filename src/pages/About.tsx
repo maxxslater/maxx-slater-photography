@@ -1,51 +1,32 @@
 import { Link } from "react-router-dom";
 
-/* Replace this empty string with your image path, e.g. "/images/portrait.jpg" */
-const PORTRAIT_URL = "/images/portrait.jpg";
+
 
 export default function About() {
-  return (
+  return (())
     <section className="min-h-screen bg-neutral-950">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* ── Left: Portrait Image ── */}
         <div className="relative overflow-hidden lg:min-h-screen">
           {PORTRAIT_URL ? (
             <>
-              <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-neutral-950/40" />
-              <img
-                src={PORTRAIT_URL}
-                alt="Maxx Slater — photographer portrait"
-                className="h-[55vh] w-full object-cover object-top lg:h-full lg:sticky lg:top-0"
-              />
-            </>
-          ) : (
-            /* Placeholder */
-            <div className="flex h-[55vh] lg:h-full w-full flex-col items-center justify-center gap-4 bg-neutral-900 border-r border-neutral-800/50">
-              <svg
-                className="h-16 w-16 text-neutral-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={0.75}
-              >
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
-              <img src="/components/aaa.jpg" alt="Maxx Slater — photographer portrait" className="h-16 w-16 rounded-full object-cover object-top" />
-              <p className="text-sm font-light tracking-[0.35em] uppercase text-neutral-400">
-                Portrait Placeholder
-              </p>
-              
-            </div>
-          )}
+ {/* ── Left: Portrait Image ── */}
+<div className="relative overflow-hidden lg:min-h-screen">
+  <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-neutral-950/40" />
 
-          {/* Mobile overlay name */}
-          <div className="absolute bottom-8 left-6 z-20 lg:hidden">
-            <p className="text-xs font-light tracking-[0.35em] uppercase text-neutral-400">
-              The Photographer
-            </p>
-          </div>
-        </div>
+  <img
+    src="/images/portrait.jpg"
+    alt="Maxx Slater — photographer portrait"
+    className="h-[55vh] w-full object-cover object-top lg:h-full lg:sticky lg:top-0"
+  />
+
+  {/* Mobile overlay name */}
+  <div className="absolute bottom-8 left-6 z-20 lg:hidden">
+    <p className="text-xs font-light tracking-[0.35em] uppercase text-neutral-400">
+      The Photographer
+    </p>
+  </div>
+</div>
 
         {/* ── Right: Bio & Text ── */}
         <div className="flex flex-col justify-center px-8 py-16 sm:px-12 lg:px-16 xl:px-24 lg:py-24">
