@@ -1,35 +1,31 @@
 import { Link } from "react-router-dom";
 
-
-
 export default function About() {
-  return (())
+  return (
     <section className="min-h-screen bg-neutral-950">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 min-h-screen">
+
         {/* ── Left: Portrait Image ── */}
         <div className="relative overflow-hidden lg:min-h-screen">
-          {PORTRAIT_URL ? (
-            <>
- {/* ── Left: Portrait Image ── */}
-<div className="relative overflow-hidden lg:min-h-screen">
-  <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-neutral-950/40" />
+          <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-neutral-950/40" />
 
-  <img
-    src="/images/portrait.jpg"
-    alt="Maxx Slater — photographer portrait"
-    className="h-[55vh] w-full object-cover object-top lg:h-full lg:sticky lg:top-0"
-  />
+          <img
+            src="/images/portrait.jpg"
+            alt="Maxx Slater — photographer portrait"
+            className="h-[55vh] w-full object-cover object-top lg:h-full lg:sticky lg:top-0"
+          />
 
-  {/* Mobile overlay name */}
-  <div className="absolute bottom-8 left-6 z-20 lg:hidden">
-    <p className="text-xs font-light tracking-[0.35em] uppercase text-neutral-400">
-      The Photographer
-    </p>
-  </div>
-</div>
+          {/* Mobile overlay name */}
+          <div className="absolute bottom-8 left-6 z-20 lg:hidden">
+            <p className="text-xs font-light tracking-[0.35em] uppercase text-neutral-400">
+              The Photographer
+            </p>
+          </div>
+        </div>
 
         {/* ── Right: Bio & Text ── */}
         <div className="flex flex-col justify-center px-8 py-16 sm:px-12 lg:px-16 xl:px-24 lg:py-24">
+
           {/* Section label */}
           <div className="mb-8 flex items-center gap-4">
             <span className="h-px w-8 bg-amber-400/60" />
@@ -47,17 +43,25 @@ export default function About() {
           {/* Bio copy */}
           <div className="space-y-6 text-base sm:text-lg font-light leading-relaxed text-neutral-400 mb-12">
             <p>
-              Based in <span className="text-white font-normal">Columbus, Ohio</span> with
-              a global vision — I'm driven to create work that goes beyond
-              expectations, <span className="text-white font-normal">naturally</span>.
-              No overproduced setups, no forced smiles — just honest, intentional
-              images that actually feel like you.
+              Based in{" "}
+              <span className="text-white font-normal">
+                Columbus, Ohio
+              </span>{" "}
+              with a global vision — I'm driven to create work that goes beyond
+              expectations,{" "}
+              <span className="text-white font-normal">
+                naturally
+              </span>
+              . No overproduced setups, no forced smiles — just honest,
+              intentional images that actually feel like you.
             </p>
 
             <p>
               Whether you need brand content, portraits, or something you
               haven't quite figured out yet, I'd love to hear about it.{" "}
-              <span className="text-amber-400/90 font-normal">Let's make something worth looking at.</span>
+              <span className="text-amber-400/90 font-normal">
+                Let's make something worth looking at.
+              </span>
             </p>
           </div>
 
@@ -67,6 +71,7 @@ export default function About() {
             className="group inline-flex items-center gap-3 self-start border border-amber-400/30 px-8 py-4 text-sm font-light tracking-[0.25em] uppercase text-amber-400 transition-all duration-500 hover:bg-amber-400 hover:text-neutral-950 hover:tracking-[0.35em]"
           >
             Let's Work Together
+
             <svg
               className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
               fill="none"
@@ -74,7 +79,11 @@ export default function About() {
               stroke="currentColor"
               strokeWidth={1.5}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+              />
             </svg>
           </Link>
         </div>
