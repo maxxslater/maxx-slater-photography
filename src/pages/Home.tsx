@@ -1,54 +1,158 @@
 import { Link } from "react-router-dom";
-import BrandLogo from "../components/BrandLogo";
+import Marquee from "../components/Marquee";
+import FrameSlot from "../components/FrameSlot";
+import { featuredFrames, frames } from "../data/portfolio";
 
-const navLinks = [
-  { to: "/about", label: "About" },
-  { to: "/portfolio", label: "Portfolio" },
-  { to: "/contact", label: "Contact" },
+const indexLinks = [
+  { to: "/portfolio", label: "Portfolio", n: "01", note: "Selected frames" },
+  { to: "/about", label: "About", n: "02", note: "Who is behind the camera" },
+  { to: "/contact", label: "Booking", n: "03", note: "Start a project" },
 ];
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-neutral-950 px-6">
-      {/* Subtle radial glow behind logo */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="h-[500px] w-[500px] rounded-full bg-amber-400/[0.03] blur-3xl" />
-      </div>
+    <div className="bg-black">
+      {/* ══ HERO ════════════════════════════════════════════════ */}
+      <section className="relative border-b-2 border-white">
+        <div className="grid-lines absolute inset-0" aria-hidden="true" />
 
-      {/* ── Brand Logo ── */}
-      <div className="relative z-10 flex flex-col items-center gap-16">
-        <BrandLogo size="lg" />
+        <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_320px]">
+          {/* Wordmark */}
+          <div className="flex flex-col justify-center px-4 py-14 sm:px-6 sm:py-20 lg:py-28">
+            <p className="mono mb-6 text-[10px] text-white/50 sm:text-xs">
+              [ PHOTOGRAPHER — COLUMBUS, OHIO ]
+            </p>
 
-        {/* ── Decorative divider ── */}
-        <div className="flex items-center gap-4">
-          <span className="h-px w-12 bg-neutral-700" />
-          <span className="h-1.5 w-1.5 rotate-45 border border-amber-400/60" />
-          <span className="h-px w-12 bg-neutral-700" />
+            <h1 className="display text-[19vw] leading-[0.78] sm:text-[16vw] lg:text-[13vw]">
+              <span className="block">Maxx</span>
+              <span className="block stroke">Slater</span>
+            </h1>
+
+            <p className="display-wide mt-6 max-w-2xl text-lg leading-tight sm:text-2xl lg:text-3xl">
+              The moments in between other moments — where true emotion lives.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/portfolio"
+                className="mono border-2 border-white px-8 py-4 text-center text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black"
+              >
+                View the work →
+              </Link>
+              <Link
+                to="/contact"
+                className="mono border-2 border-white bg-white px-8 py-4 text-center text-xs font-medium text-black transition-colors duration-100 hover:bg-black hover:text-white"
+              >
+                Book a session
+              </Link>
+            </div>
+          </div>
+
+          {/* Spec column */}
+          <aside className="flex flex-col border-t-2 border-white lg:border-l-2 lg:border-t-0">
+            <Spec label="Based" value="Columbus, OH" />
+            <Spec label="Shooting" value="Portrait / Editorial / Live" />
+            <Spec label="Approach" value="No posing. No forced smiles." />
+            <Spec label="Frames" value={`${frames.length} in the index`} />
+            <div className="mono flex flex-1 items-end justify-between px-4 py-4 text-[10px] text-white/40">
+              <span>SCROLL</span>
+              <span aria-hidden="true">↓</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* ══ TICKER ══════════════════════════════════════════════ */}
+      <Marquee
+        items={[
+          "SHOT + CURATED BY MAXX SLATER",
+          "AVAILABLE FOR COMMISSIONS",
+          "COLUMBUS / OHIO / EVERYWHERE",
+          "BE YOURSELF",
+        ]}
+        invert
+        className="border-t-0"
+      />
+
+      {/* ══ FEATURED STRIP ══════════════════════════════════════ */}
+      <section className="border-b-2 border-white">
+        <div className="flex items-center justify-between border-b-2 border-white px-4 py-3">
+          <h2 className="mono text-xs font-medium">[ 01 ] SELECTED WORK</h2>
+          <Link
+            to="/portfolio"
+            className="mono text-[10px] text-white/60 transition-colors duration-100 hover:text-white hover:underline"
+          >
+            SEE ALL {String(frames.length).padStart(2, "0")} →
+          </Link>
         </div>
 
-        {/* ── Navigation Links ── */}
-        <nav>
-          <ul className="flex flex-col sm:flex-row items-center gap-6 sm:gap-12">
-            {navLinks.map(({ to, label }) => (
-              <li key={to}>
-                <Link
-                  to={to}
-                  className="group relative text-lg sm:text-xl font-extralight tracking-[0.3em] uppercase text-neutral-400 transition-colors duration-500 hover:text-white"
-                >
-                  {label}
-                  {/* Underline animation */}
-                  <span className="absolute -bottom-2 left-1/2 h-px w-0 -translate-x-1/2 bg-amber-400 transition-all duration-500 group-hover:w-full" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+        <div className="grid grid-cols-1 gap-0.5 bg-white sm:grid-cols-3">
+          {featuredFrames.slice(0, 3).map((frame) => (
+            <FrameSlot
+              key={frame.title}
+              frame={frame}
+              index={frames.indexOf(frame)}
+              className="aspect-[4/5]"
+            />
+          ))}
+        </div>
+      </section>
 
-      {/* ── Bottom subtle copyright ── */}
-      <p className="absolute bottom-6 text-[11px] tracking-widest text-neutral-700 uppercase">
-        &copy; {new Date().getFullYear()} Maxx Slater Photography
-      </p>
+      {/* ══ STATEMENT ═══════════════════════════════════════════ */}
+      <section className="border-b-2 border-white">
+        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
+          <div className="mono border-b-2 border-white px-4 py-4 text-[10px] text-white/50 md:border-b-0 md:border-r-2">
+            [ 02 ] STATEMENT
+          </div>
+          <div className="px-4 py-10 sm:py-16">
+            <p className="display-thin text-3xl leading-[1.05] sm:text-5xl lg:text-6xl">
+              I won&rsquo;t ask you to smile more,
+              <br />
+              <span className="display">or pose awkwardly.</span>
+              <br />
+              I&rsquo;ll only ask you to
+              <br />
+              <span className="display">be yourself.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ INDEX SLABS ═════════════════════════════════════════ */}
+      <section>
+        <div className="mono border-b-2 border-white px-4 py-3 text-xs font-medium">
+          [ 03 ] INDEX
+        </div>
+
+        {indexLinks.map(({ to, label, n, note }) => (
+          <Link
+            key={to}
+            to={to}
+            className="group flex items-center justify-between border-b-2 border-white px-4 py-6 transition-colors duration-100 hover:bg-white hover:text-black sm:py-8"
+          >
+            <span className="flex items-baseline gap-4 sm:gap-8">
+              <span className="mono text-[10px] opacity-50">{n}</span>
+              <span className="display text-5xl sm:text-7xl lg:text-8xl">{label}</span>
+            </span>
+            <span className="mono hidden text-[10px] opacity-60 sm:block">
+              {note} →
+            </span>
+            <span className="mono text-lg sm:hidden" aria-hidden="true">
+              →
+            </span>
+          </Link>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+/* ── Spec row ─────────────────────────────────────────────── */
+function Spec({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-b-2 border-white px-4 py-4">
+      <p className="mono mb-1 text-[9px] text-white/40">{label}</p>
+      <p className="mono text-[11px] leading-relaxed text-white">{value}</p>
     </div>
   );
 }

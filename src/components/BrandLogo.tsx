@@ -4,37 +4,27 @@ interface BrandLogoProps {
 }
 
 const sizes = {
-  sm: {
-    maxx: "text-lg",
-    slater: "text-lg",
-    photography: "text-xs",
-  },
-  md: {
-    maxx: "text-2xl",
-    slater: "text-2xl",
-    photography: "text-sm",
-  },
-  lg: {
-    maxx: "text-4xl sm:text-5xl",
-    slater: "text-4xl sm:text-5xl",
-    photography: "text-lg sm:text-xl",
-  },
+  sm: { name: "text-xl sm:text-2xl", tag: "text-[8px]" },
+  md: { name: "text-3xl sm:text-4xl", tag: "text-[10px]" },
+  lg: { name: "text-6xl sm:text-8xl", tag: "text-xs sm:text-sm" },
 };
 
+/**
+ * MAXX / SLATER set as a hard condensed block with a machine-set
+ * PHOTOGRAPHY rule underneath. Colours inherit from the parent so the
+ * mark flips correctly inside invert-on-hover cells.
+ */
 export default function BrandLogo({ size = "md", className = "" }: BrandLogoProps) {
   const s = sizes[size];
 
   return (
-    <span className={`inline-flex flex-col items-center leading-none ${className}`}>
-      <span className="flex items-baseline gap-[0.35em] tracking-[0.2em] uppercase">
-        <span className={`${s.maxx} font-black text-white`}>MAXX</span>
-        <span className={`${s.slater} font-extralight text-white`}>SLATER</span>
+    <span className={`inline-flex flex-col leading-none text-current ${className}`}>
+      <span className={`display ${s.name}`}>
+        MAXX<span className="display-thin">SLATER</span>
       </span>
-      <span
-        className={`${s.photography} font-script text-amber-400 -mt-[0.15em] tracking-wide`}
-        style={{ fontStyle: "normal" }}
-      >
-        photography
+      <span className={`mono ${s.tag} mt-1 flex items-center gap-2 font-medium opacity-70`}>
+        <span className="h-px w-3 bg-current opacity-70" />
+        PHOTOGRAPHY
       </span>
     </span>
   );

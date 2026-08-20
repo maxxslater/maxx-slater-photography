@@ -7,66 +7,27 @@ interface PageTransitionProps {
 }
 
 /*
- * Two-phase animation:
- *
- * EXIT  → zoom out (scale 1 → 0.8, rounds corners), then swipe left
- * ENTER → swipe in from right, then zoom up to full (corners sharpen)
- *
- * Uses framer-motion keyframes for the multi-step feel.
+ * Brutalist transition: no easing mush, no fades into nothing.
+ * ENTER → hard vertical wipe up from the bottom edge.
+ * EXIT  → the panel snaps away upward and clips shut.
  */
 
-const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const ease: [number, number, number, number] = [0.85, 0, 0.15, 1];
 
 const variants: Variants = {
   initial: {
-    scale: 0.82,
-    x: "100%",
-    opacity: 0,
-    borderRadius: "24px",
-    border: "1px solid rgba(255, 255, 255, 0.15)",
-    boxShadow: "0 25px 60px rgba(0, 0, 0, 0.5)",
+    clipPath: "inset(100% 0% 0% 0%)",
+    y: 24,
   },
   animate: {
-    scale: [0.82, 0.82, 1],
-    x: ["100%", "0%", "0%"],
-    opacity: [0, 1, 1],
-    borderRadius: ["24px", "24px", "0px"],
-    border: [
-      "1px solid rgba(255, 255, 255, 0.15)",
-      "1px solid rgba(255, 255, 255, 0.15)",
-      "1px solid rgba(255, 255, 255, 0)",
-    ],
-    boxShadow: [
-      "0 25px 60px rgba(0, 0, 0, 0.5)",
-      "0 25px 60px rgba(0, 0, 0, 0.5)",
-      "0 0px 0px rgba(0, 0, 0, 0)",
-    ],
-    transition: {
-      duration: 0.75,
-      ease,
-      times: [0, 0.5, 1],
-    },
+    clipPath: "inset(0% 0% 0% 0%)",
+    y: 0,
+    transition: { duration: 0.45, ease },
   },
   exit: {
-    scale: [1, 0.82, 0.82],
-    x: ["0%", "0%", "-100%"],
-    opacity: [1, 1, 0],
-    borderRadius: ["0px", "24px", "24px"],
-    border: [
-      "1px solid rgba(255, 255, 255, 0)",
-      "1px solid rgba(255, 255, 255, 0.15)",
-      "1px solid rgba(255, 255, 255, 0.15)",
-    ],
-    boxShadow: [
-      "0 0px 0px rgba(0, 0, 0, 0)",
-      "0 25px 60px rgba(0, 0, 0, 0.5)",
-      "0 25px 60px rgba(0, 0, 0, 0.5)",
-    ],
-    transition: {
-      duration: 0.65,
-      ease,
-      times: [0, 0.45, 1],
-    },
+    clipPath: "inset(0% 0% 100% 0%)",
+    y: -24,
+    transition: { duration: 0.3, ease },
   },
 };
 
@@ -77,8 +38,8 @@ export default function PageTransition({ children }: PageTransitionProps) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="min-h-screen origin-center overflow-hidden"
-      style={{ willChange: "transform, opacity" }}
+      className="min-h-screen bg-black"
+      style={{ willChange: "clip-path, transform" }}
     >
       {children}
     </motion.div>

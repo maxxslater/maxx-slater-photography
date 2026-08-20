@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const fieldBase =
+  "mono w-full border-2 border-white bg-black px-4 py-4 text-[12px] text-white placeholder-white/30 outline-none transition-colors duration-100 focus:bg-white focus:text-black focus:placeholder-black/40";
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [name, setName] = useState("");
@@ -21,171 +24,192 @@ export default function Contact() {
   }
 
   return (
-    <section className="min-h-screen bg-neutral-950 px-4 sm:px-6 py-16 sm:py-24">
-      <div className="mx-auto max-w-2xl">
-        {/* ── Header ── */}
-        <div className="mb-14 flex flex-col items-center text-center">
-          <div className="mb-6 flex items-center gap-4">
-            <span className="h-px w-8 bg-amber-400/60" />
-            <p className="text-xs font-light tracking-[0.35em] uppercase text-amber-400">
-              Get In Touch
-            </p>
-            <span className="h-px w-8 bg-amber-400/60" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extralight tracking-wide text-white">
-            Let's <span className="font-black">Connect</span>
-          </h1>
-        </div>
+    <section className="bg-black">
+      {/* ══ MASTHEAD ════════════════════════════════════════════ */}
+      <div className="border-b-2 border-white px-4 py-10 sm:py-14">
+        <p className="mono mb-5 text-[10px] text-white/50">[ 04 ] CONTACT</p>
+        <h1 className="display text-[15vw] leading-[0.78] sm:text-[12vw] lg:text-[9vw]">
+          Contact
+          <br />
+          <span className="stroke">+ Booking</span>
+        </h1>
+      </div>
 
-        <AnimatePresence mode="wait">
-          {!submitted ? (
-            <motion.form
-              key="form"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20, scale: 0.97 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              onSubmit={handleSubmit}
-              className="space-y-8"
-            >
-              {/* Name */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="name"
-                  className="block text-xs font-light tracking-[0.25em] uppercase text-neutral-500"
-                >
-                  Name <span className="text-amber-400">*</span>
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your full name"
-                  className="w-full border-b border-neutral-800 bg-transparent px-0 py-3 text-base font-light text-white placeholder-neutral-700 outline-none transition-colors duration-300 focus:border-amber-400/60"
-                />
-              </div>
+      <div className="grid grid-cols-1 border-b-2 border-white lg:grid-cols-[1fr_minmax(0,380px)]">
+        {/* ══ FORM ══════════════════════════════════════════════ */}
+        <div className="border-b-2 border-white px-4 py-10 sm:px-8 sm:py-14 lg:border-b-0 lg:border-r-2">
+          <AnimatePresence mode="wait">
+            {!submitted ? (
+              <motion.form
+                key="form"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.2, ease: [0.85, 0, 0.15, 1] }}
+                onSubmit={handleSubmit}
+                className="max-w-2xl space-y-6"
+              >
+                <Field id="name" label="Name" required n="01">
+                  <input
+                    id="name"
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="YOUR FULL NAME"
+                    className={fieldBase}
+                  />
+                </Field>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="block text-xs font-light tracking-[0.25em] uppercase text-neutral-500"
-                >
-                  Email <span className="text-amber-400">*</span>
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="w-full border-b border-neutral-800 bg-transparent px-0 py-3 text-base font-light text-white placeholder-neutral-700 outline-none transition-colors duration-300 focus:border-amber-400/60"
-                />
-              </div>
+                <Field id="email" label="Email" required n="02">
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="YOU@EMAIL.COM"
+                    className={fieldBase}
+                  />
+                </Field>
 
-              {/* Phone (optional) */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="phone"
-                  className="block text-xs font-light tracking-[0.25em] uppercase text-neutral-500"
-                >
-                  Phone <span className="text-neutral-700 text-[10px] tracking-widest">(optional)</span>
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="(555) 123-4567"
-                  className="w-full border-b border-neutral-800 bg-transparent px-0 py-3 text-base font-light text-white placeholder-neutral-700 outline-none transition-colors duration-300 focus:border-amber-400/60"
-                />
-              </div>
+                <Field id="phone" label="Phone — optional" n="03">
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(555) 123-4567"
+                    className={fieldBase}
+                  />
+                </Field>
 
-              {/* Message */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="message"
-                  className="block text-xs font-light tracking-[0.25em] uppercase text-neutral-500"
-                >
-                  Message <span className="text-amber-400">*</span>
-                </label>
-                <textarea
-                  id="message"
-                  required
-                  rows={5}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell me about your project, vision, or just say hey..."
-                  className="w-full resize-none border-b border-neutral-800 bg-transparent px-0 py-3 text-base font-light text-white placeholder-neutral-700 outline-none transition-colors duration-300 focus:border-amber-400/60"
-                />
-              </div>
+                <Field id="message" label="Message" required n="04">
+                  <textarea
+                    id="message"
+                    required
+                    rows={6}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="TELL ME ABOUT THE PROJECT, THE DATE, THE VIBE..."
+                    className={`${fieldBase} resize-none leading-relaxed`}
+                  />
+                </Field>
 
-              {/* Submit */}
-              <div className="pt-4">
                 <button
                   type="submit"
-                  className="group inline-flex w-full sm:w-auto items-center justify-center gap-3 border border-amber-400/30 px-10 py-4 text-sm font-light tracking-[0.25em] uppercase text-amber-400 transition-all duration-500 hover:bg-amber-400 hover:text-neutral-950 hover:tracking-[0.35em] cursor-pointer"
+                  className="mono w-full cursor-pointer border-2 border-white bg-white px-8 py-5 text-xs font-medium text-black transition-colors duration-100 hover:bg-black hover:text-white sm:w-auto"
                 >
-                  Send Message
-                  <svg
-                    className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                  </svg>
+                  Send it →
                 </button>
-              </div>
-            </motion.form>
-          ) : (
-            <motion.div
-              key="thanks"
-              initial={{ opacity: 0, y: 20, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center text-center py-16 sm:py-24"
-            >
-              {/* Checkmark */}
-              <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-full border border-amber-400/30">
-                <svg
-                  className="h-7 w-7 text-amber-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
+              </motion.form>
+            ) : (
+              <motion.div
+                key="sent"
+                initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+                animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
+                transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+                className="border-2 border-white p-8"
+              >
+                <p className="display text-5xl leading-none sm:text-7xl">
+                  Message
+                  <br />
+                  sent.
+                </p>
+                <p className="mono mt-6 text-[11px] leading-relaxed text-white/60">
+                  YOUR MAIL CLIENT SHOULD HAVE OPENED. IF NOT, WRITE DIRECTLY TO
+                  MAXX@MAXXSLATER.COM — I&rsquo;LL GET BACK TO YOU SHORTLY.
+                </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="mono mt-8 cursor-pointer border-2 border-white px-6 py-3 text-[11px] transition-colors duration-100 hover:bg-white hover:text-black"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-              </div>
+                  ← Send another
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-              <h2 className="mb-4 text-2xl sm:text-3xl font-extralight tracking-wide text-white">
-                Thank you, <span className="font-black">{name}</span>.
-              </h2>
+        {/* ══ SIDEBAR ═══════════════════════════════════════════ */}
+        <aside className="flex flex-col">
+          <div className="border-b-2 border-white px-4 py-8">
+            <p className="mono mb-4 text-[9px] text-white/40">THE ASK</p>
+            <p className="text-lg leading-snug text-white sm:text-xl">
+              If you&rsquo;d like to work together, or just want some info, fill
+              out the form and I&rsquo;ll talk to you soon&nbsp;:)
+            </p>
+          </div>
 
-              <p className="max-w-md text-base font-light leading-relaxed text-neutral-400">
-                Your message is on its way. I'll get back to you as soon as
-                possible — usually within 24 hours.
-              </p>
+          <SideRow label="Email" value="maxx@maxxslater.com" href="mailto:maxx@maxxslater.com" />
+          <SideRow label="Location" value="Columbus, Ohio — USA" />
+          <SideRow label="Response time" value="Within 48 hours" />
+          <SideRow label="Booking" value="Retainer secures the date" />
 
-              <p className="mt-6 text-sm font-light text-neutral-600">
-                Talk soon.
-              </p>
-
-              {/* Decorative divider */}
-              <div className="mt-10 flex items-center gap-4">
-                <span className="h-px w-12 bg-neutral-800" />
-                <span className="h-1.5 w-1.5 rotate-45 border border-amber-400/40" />
-                <span className="h-px w-12 bg-neutral-800" />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          <div className="mono flex flex-1 items-end px-4 py-6 text-[10px] text-white/30">
+            <span className="flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 animate-blink bg-white" />
+              CURRENTLY ACCEPTING WORK
+            </span>
+          </div>
+        </aside>
       </div>
     </section>
+  );
+}
+
+/* ── Bits ─────────────────────────────────────────────────── */
+
+function Field({
+  id,
+  label,
+  n,
+  required,
+  children,
+}: {
+  id: string;
+  label: string;
+  n: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mono mb-2 flex items-center gap-2 text-[10px] text-white/60"
+      >
+        <span className="opacity-40">{n}</span>
+        {label}
+        {required && <span className="text-white">*</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function SideRow({
+  label,
+  value,
+  href,
+}: {
+  label: string;
+  value: string;
+  href?: string;
+}) {
+  return (
+    <div className="border-b-2 border-white px-4 py-5">
+      <p className="mono mb-2 text-[9px] text-white/40">{label}</p>
+      {href ? (
+        <a
+          href={href}
+          className="mono text-[11px] text-white transition-colors duration-100 hover:underline"
+        >
+          {value.toUpperCase()}
+        </a>
+      ) : (
+        <p className="mono text-[11px] text-white">{value.toUpperCase()}</p>
+      )}
+    </div>
   );
 }
