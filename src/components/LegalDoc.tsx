@@ -1,3 +1,5 @@
+import Reveal from "./Reveal";
+
 interface Section {
   heading: string;
   body: React.ReactNode;
@@ -32,8 +34,9 @@ export default function LegalDoc({
 
       <div className="border-b-2 border-white">
         {sections.map((section, i) => (
-          <article
+          <Reveal
             key={section.heading}
+            from="left"
             className="grid grid-cols-1 border-b-2 border-white last:border-b-0 md:grid-cols-[220px_1fr]"
           >
             <div className="mono border-b-2 border-white px-4 py-4 text-[10px] text-white/60 md:border-b-0 md:border-r-2">
@@ -45,7 +48,7 @@ export default function LegalDoc({
             <div className="px-4 py-6 text-sm leading-relaxed text-white/75 sm:text-base">
               {section.body}
             </div>
-          </article>
+          </Reveal>
         ))}
       </div>
 

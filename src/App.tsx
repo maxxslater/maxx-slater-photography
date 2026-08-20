@@ -2,6 +2,9 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
+import Cursor from "./components/Cursor";
+import BootSequence from "./components/BootSequence";
+import ProgressRail from "./components/ProgressRail";
 import PageTransition from "./components/PageTransition";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -16,6 +19,16 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+
+      {/* Global chrome — lives outside AnimatePresence so it survives routing */}
+      <BootSequence />
+      <Cursor />
+      <ProgressRail />
+      <div
+        className="grain pointer-events-none fixed inset-[-10%] z-[130] opacity-[0.06] mix-blend-screen"
+        aria-hidden="true"
+      />
+
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route element={<Layout />}>

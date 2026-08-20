@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FrameSlot from "../components/FrameSlot";
+import ScrambleText from "../components/ScrambleText";
+import Reveal from "../components/Reveal";
 import { frames, categories, spanFor } from "../data/portfolio";
 
 export default function Portfolio() {
@@ -48,7 +50,7 @@ export default function Portfolio() {
       <div className="border-b-2 border-white px-4 py-10 sm:py-14">
         <p className="mono mb-5 text-[10px] text-white/50">[ 02 ] PORTFOLIO</p>
         <h1 className="display text-[18vw] leading-[0.78] sm:text-[14vw] lg:text-[11vw]">
-          Portfolio
+          <ScrambleText text="PORTFOLIO" trigger="mount" duration={700} />
         </h1>
         <p className="mono mt-6 max-w-md text-[11px] leading-relaxed text-white/60">
           SELECTED WORK SHOT + CURATED BY MAXX SLATER.
@@ -85,15 +87,26 @@ export default function Portfolio() {
       {/* ══ GRID ════════════════════════════════════════════════
           White container + 2px gaps = hard rules between every cell */}
       <div className="grid auto-rows-[42vw] grid-cols-2 gap-0.5 border-b-2 border-white bg-white sm:auto-rows-[28vw] sm:grid-cols-3 lg:auto-rows-[19vw] lg:grid-cols-4">
-        {visible.map((frame) => (
-          <FrameSlot
-            key={frame.title}
-            frame={frame}
-            index={frames.indexOf(frame)}
-            className={`h-full ${spanFor[frame.size]}`}
-            onClick={() => setSelected(frames.indexOf(frame))}
-          />
-        ))}
+        {visible.map((frame, i) => {
+          const idx = frames.indexOf(frame);
+          return (
+            <Reveal
+              key={frame.title}
+              from={i % 2 === 0 ? "up" : "left"}
+              delay={(i % 4) * 0.06}
+              flash
+              className={`h-full ${spanFor[frame.size]}`}
+            >
+              <FrameSlot
+                frame={frame}
+                index={idx}
+                layoutId={`frame-${idx}`}
+                className="h-full"
+                onClick={() => setSelected(idx)}
+              />
+            </Reveal>
+          );
+        })}
       </div>
 
       {/* ══ END NOTE ════════════════════════════════════════════ */}
@@ -110,11 +123,17 @@ export default function Portfolio() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.12 }}
-            className="fixed inset-0 z-[100] flex flex-col bg-black"
+            className="fixed inset-0 z-[160] flex flex-col bg-black"
             onClick={() => setSelected(null)}
           >
             {/* Top rail */}
-            <div className="flex items-stretch justify-between border-b-2 border-white">
+            <motion.div
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-b-2 border-white bg-black"
+            >
               <span className="mono flex items-center px-4 py-3 text-[10px] text-white/60">
                 {String(selected + 1).padStart(2, "0")} /{" "}
                 {String(frames.length).padStart(2, "0")}
@@ -133,37 +152,46 @@ export default function Portfolio() {
               >
                 Close ✕
               </button>
-            </div>
+            </motion.div>
 
             {/* Stage */}
-            <motion.div
-              initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
-              animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-              exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
-              transition={{ duration: 0.25, ease: [0.85, 0, 0.15, 1] }}
+            <div
               className="flex flex-1 items-center justify-center overflow-hidden p-4 sm:p-10"
               onClick={(e) => e.stopPropagation()}
             >
-              {current.src ? (
-                <img
-                  src={current.src}
-                  alt={current.alt ?? current.title}
-                  className="max-h-full max-w-full border-2 border-white object-contain"
-                />
-              ) : (
-                <div className="hatch flex aspect-[4/3] w-full max-w-3xl flex-col items-center justify-center gap-4 border-2 border-white">
-                  <span className="display text-7xl text-white/20 sm:text-9xl">
-                    {String(selected + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mono text-[10px] text-white/50">
-                    EMPTY SLOT — ADD A PATH IN src/data/portfolio.ts
-                  </span>
-                </div>
-              )}
-            </motion.div>
+              {/* Shared element: the clicked cell physically flies into place */}
+              <motion.div
+                layoutId={`frame-${selected}`}
+                transition={{ duration: 0.42, ease: [0.85, 0, 0.15, 1] }}
+                className="flex max-h-full w-full max-w-3xl items-center justify-center"
+              >
+                {current.src ? (
+                  <img
+                    src={current.src}
+                    alt={current.alt ?? current.title}
+                    className="max-h-[72vh] max-w-full border-2 border-white object-contain"
+                  />
+                ) : (
+                  <div className="hatch flex aspect-[4/3] w-full flex-col items-center justify-center gap-4 border-2 border-white">
+                    <span className="display text-7xl text-white/20 sm:text-9xl">
+                      {String(selected + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mono text-[10px] text-white/50">
+                      EMPTY SLOT — ADD A PATH IN src/data/portfolio.ts
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            </div>
 
             {/* Bottom rail */}
-            <div className="flex items-stretch justify-between border-t-2 border-white">
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-t-2 border-white bg-black"
+            >
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -190,7 +218,7 @@ export default function Portfolio() {
               >
                 Next →
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import Marquee from "./Marquee";
+import ScrambleText from "./ScrambleText";
 
 const navLinks = [
   { to: "/", label: "Index", n: "01" },
@@ -43,6 +44,7 @@ export default function Layout() {
           {/* Brand */}
           <Link
             to="/"
+            data-cursor="HOME"
             className="flex items-center border-r-2 border-white px-4 py-3 transition-colors duration-100 hover:bg-white hover:text-black sm:px-6"
           >
             <BrandLogo size="sm" />
@@ -56,14 +58,20 @@ export default function Layout() {
                 <li key={to} className="flex">
                   <Link
                     to={to}
-                    className={`mono flex items-center gap-2 border-l-2 border-white px-5 text-xs font-medium transition-colors duration-100 lg:px-7 ${
+                    data-cursor={label.toUpperCase()}
+                    className={`mono group relative flex items-center gap-2 overflow-hidden border-l-2 border-white px-5 text-xs font-medium transition-colors duration-150 lg:px-7 ${
                       active
                         ? "bg-white text-black"
-                        : "bg-black text-white hover:bg-white hover:text-black"
+                        : "bg-black text-white hover:text-black"
                     }`}
                   >
-                    <span className="text-[9px] opacity-50">{n}</span>
-                    {label}
+                    {!active && (
+                      <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-200 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
+                    )}
+                    <span className="relative text-[9px] opacity-50">{n}</span>
+                    <span className="relative">
+                      <ScrambleText text={label} trigger="hover" duration={380} />
+                    </span>
                   </Link>
                 </li>
               );
@@ -75,6 +83,7 @@ export default function Layout() {
             onClick={() => setOpen(true)}
             className="mono border-l-2 border-white px-5 text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black md:hidden"
             aria-label="Open menu"
+            data-cursor="MENU"
           >
             Menu
           </button>
@@ -138,10 +147,12 @@ export default function Layout() {
         {/* Wordmark slab */}
         <Link
           to="/contact"
-          className="group block border-b-2 border-white px-4 py-10 transition-colors duration-100 hover:bg-white hover:text-black sm:py-16"
+          data-cursor="BOOK"
+          className="group relative block overflow-hidden border-b-2 border-white px-4 py-10 text-white transition-colors duration-150 hover:text-black sm:py-16"
         >
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <span className="display text-[15vw] leading-[0.8] sm:text-[11vw]">
+          <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-300 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <span className="display text-[15vw] leading-[0.8] transition-transform duration-300 group-hover:translate-x-4 sm:text-[11vw]">
               Let&rsquo;s work
             </span>
             <span className="mono shrink-0 text-xs sm:pb-3">

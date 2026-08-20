@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Reveal from "../components/Reveal";
+import ScrambleText from "../components/ScrambleText";
+import KineticWord from "../components/KineticWord";
 
 const fieldBase =
   "mono w-full border-2 border-white bg-black px-4 py-4 text-[12px] text-white placeholder-white/30 outline-none transition-colors duration-100 focus:bg-white focus:text-black focus:placeholder-black/40";
@@ -27,11 +30,12 @@ export default function Contact() {
     <section className="bg-black">
       {/* ══ MASTHEAD ════════════════════════════════════════════ */}
       <div className="border-b-2 border-white px-4 py-10 sm:py-14">
-        <p className="mono mb-5 text-[10px] text-white/50">[ 04 ] CONTACT</p>
+        <p className="mono mb-5 text-[10px] text-white/50">
+          <ScrambleText text="[ 04 ] CONTACT" trigger="mount" />
+        </p>
         <h1 className="display text-[15vw] leading-[0.78] sm:text-[12vw] lg:text-[9vw]">
-          Contact
-          <br />
-          <span className="stroke">+ Booking</span>
+          <KineticWord text="CONTACT" className="block" />
+          <KineticWord text="+ BOOKING" className="block stroke" />
         </h1>
       </div>
 
@@ -98,9 +102,11 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="mono w-full cursor-pointer border-2 border-white bg-white px-8 py-5 text-xs font-medium text-black transition-colors duration-100 hover:bg-black hover:text-white sm:w-auto"
+                  data-cursor="SEND"
+                  className="mono group relative w-full cursor-pointer overflow-hidden border-2 border-white bg-white px-8 py-5 text-xs font-medium text-black transition-colors duration-150 hover:text-white sm:w-auto"
                 >
-                  Send it →
+                  <span className="absolute inset-0 -translate-x-full bg-black transition-transform duration-200 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-x-0" />
+                  <span className="relative">Send it →</span>
                 </button>
               </motion.form>
             ) : (
@@ -133,13 +139,13 @@ export default function Contact() {
 
         {/* ══ SIDEBAR ═══════════════════════════════════════════ */}
         <aside className="flex flex-col">
-          <div className="border-b-2 border-white px-4 py-8">
+          <Reveal className="border-b-2 border-white px-4 py-8" from="right">
             <p className="mono mb-4 text-[9px] text-white/40">THE ASK</p>
             <p className="text-lg leading-snug text-white sm:text-xl">
               If you&rsquo;d like to work together, or just want some info, fill
               out the form and I&rsquo;ll talk to you soon&nbsp;:)
             </p>
-          </div>
+          </Reveal>
 
           <SideRow label="Email" value="maxx@maxxslater.com" href="mailto:maxx@maxxslater.com" />
           <SideRow label="Location" value="Columbus, Ohio — USA" />
