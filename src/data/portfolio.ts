@@ -94,7 +94,7 @@ export const frames: Frame[] = [
     title: "POLO4",
     category: "Portrait",
     year: "2024",
-    size: "wide",
+    size: "hero",
     featured: true,
   },
   {
@@ -130,7 +130,7 @@ export const frames: Frame[] = [
     title: "SELF2",
     category: "Portrait",
     year: "2026",
-    size: "wide",
+    size: "tall",
   },
 ];
 
