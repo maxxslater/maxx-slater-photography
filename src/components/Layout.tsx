@@ -1,178 +1,248 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BrandLogo from "./BrandLogo";
+import Marquee from "./Marquee";
+import ScrambleText from "./ScrambleText";
 
 const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/portfolio", label: "Portfolio" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "Index", n: "01" },
+  { to: "/portfolio", label: "Portfolio", n: "02" },
+  { to: "/about", label: "About", n: "03" },
+  { to: "/contact", label: "Booking", n: "04" },
 ];
 
 export default function Layout() {
   const { pathname } = useLocation();
-  const isHome = pathname === "/";
+  const [open, setOpen] = useState(false);
+
+  // Close the mobile drawer on navigation and lock scroll while it is open
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-950 text-neutral-100 overflow-x-hidden">
-      {/* ── Navigation (hidden on Home — Home has its own) ── */}
-      {!isHome && (
-        <header className="sticky top-0 z-50 border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md">
-          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            {/* Logo / Brand */}
-            <Link to="/" className="group transition-opacity hover:opacity-80">
-              <BrandLogo size="sm" />
-            </Link>
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-black text-white">
+      {/* ══ STATUS BAR ══════════════════════════════════════════ */}
+      <div className="hidden border-b border-white/25 bg-black md:block">
+        <div className="mono flex items-center justify-between px-4 py-1.5 text-[10px] text-white/60">
+          <span>39.9612° N / 82.9988° W — COLUMBUS, OHIO</span>
+          <span className="flex items-center gap-2">
+            <span className="inline-block h-1.5 w-1.5 animate-blink bg-white" />
+            OPEN FOR BOOKINGS — {new Date().getFullYear()}
+          </span>
+          <span>NO FILTERS / NO POSING / NO BULLSHIT</span>
+        </div>
+      </div>
 
-            {/* Page Links */}
-            <ul className="hidden sm:flex items-center gap-8 text-sm font-light tracking-wider uppercase">
-              {navLinks.map(({ to, label }) => (
-                <li key={to}>
+      {/* ══ HEADER ══════════════════════════════════════════════ */}
+      <header className="sticky top-0 z-50 border-b-2 border-white bg-black">
+        <nav className="flex items-stretch justify-between">
+          {/* Brand */}
+          <Link
+            to="/"
+            data-cursor="HOME"
+            className="flex items-center border-r-2 border-white px-4 py-3 transition-colors duration-100 hover:bg-white hover:text-black sm:px-6"
+          >
+            <BrandLogo size="sm" />
+          </Link>
+
+          {/* Desktop nav — each link is its own hard cell */}
+          <ul className="hidden items-stretch md:flex">
+            {navLinks.map(({ to, label, n }) => {
+              const active = pathname === to;
+              return (
+                <li key={to} className="flex">
                   <Link
                     to={to}
-                    className={`relative transition-colors duration-300 hover:text-amber-400 ${
-                      pathname === to ? "text-amber-400" : "text-neutral-300"
+                    data-cursor={label.toUpperCase()}
+                    className={`mono group relative flex items-center gap-2 overflow-hidden border-l-2 border-white px-5 text-xs font-medium transition-colors duration-150 lg:px-7 ${
+                      active
+                        ? "bg-white text-black"
+                        : "bg-black text-white hover:text-black"
                     }`}
                   >
-                    {label}
-                    {pathname === to && (
-                      <span className="absolute -bottom-1 left-0 h-px w-full bg-amber-400" />
+                    {!active && (
+                      <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-200 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
                     )}
+                    <span className="relative text-[9px] opacity-50">{n}</span>
+                    <span className="relative">
+                      <ScrambleText text={label} trigger="hover" duration={380} />
+                    </span>
                   </Link>
                 </li>
-              ))}
-            </ul>
+              );
+            })}
+          </ul>
 
-            {/* Mobile Menu Button */}
-            <MobileMenu pathname={pathname} />
-          </nav>
-        </header>
+          {/* Mobile trigger */}
+          <button
+            onClick={() => setOpen(true)}
+            className="mono border-l-2 border-white px-5 text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black md:hidden"
+            aria-label="Open menu"
+            data-cursor="MENU"
+          >
+            Menu
+          </button>
+        </nav>
+      </header>
+
+      {/* ══ MOBILE DRAWER ═══════════════════════════════════════ */}
+      {open && (
+        <div className="fixed inset-0 z-[100] flex flex-col bg-black md:hidden">
+          <div className="flex items-center justify-between border-b-2 border-white px-4 py-3">
+            <BrandLogo size="sm" />
+            <button
+              onClick={() => setOpen(false)}
+              className="mono border-2 border-white px-4 py-2 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+              aria-label="Close menu"
+            >
+              Close ✕
+            </button>
+          </div>
+
+          <ul className="flex flex-1 flex-col">
+            {navLinks.map(({ to, label, n }) => (
+              <li key={to} className="flex-1 border-b-2 border-white">
+                <Link
+                  to={to}
+                  onClick={() => setOpen(false)}
+                  className="group flex h-full items-center justify-between px-4 transition-colors duration-100 hover:bg-white hover:text-black"
+                >
+                  <span className="display text-5xl">{label}</span>
+                  <span className="mono text-[10px] opacity-50">{n}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mono px-4 py-4 text-[10px] text-white/50">
+            MAXX SLATER PHOTOGRAPHY — COLUMBUS, OH
+          </div>
+        </div>
       )}
 
-      {/* ── Page Content ── */}
-      <main className="flex-1 overflow-hidden relative">
+      {/* ══ PAGE ════════════════════════════════════════════════ */}
+      <main className="relative flex-1">
         <Outlet />
       </main>
 
-      {/* ── Footer (hidden on Home) ── */}
-      {!isHome && (
-        <footer className="border-t border-neutral-800 bg-neutral-950">
-          <div className="mx-auto max-w-7xl px-6 py-14">
-            {/* Top row: brand + sitemap + legal */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
-              {/* Brand */}
-              <div className="flex flex-col items-center sm:items-start gap-4">
-                <BrandLogo size="sm" />
-                <p className="text-xs font-light leading-relaxed text-neutral-600 text-center sm:text-left max-w-[220px]">
-                  Columbus, Ohio — capturing moments that matter.
-                </p>
-              </div>
+      {/* ══ FOOTER ══════════════════════════════════════════════ */}
+      <footer className="border-t-2 border-white bg-black">
+        <Marquee
+          items={[
+            "MAXX SLATER PHOTOGRAPHY",
+            "COLUMBUS, OHIO",
+            "AVAILABLE FOR WORK",
+            "PORTRAIT / EDITORIAL / LIVE",
+          ]}
+          invert
+          slow
+          className="border-t-0"
+        />
 
-              {/* Sitemap */}
-              <div className="flex flex-col items-center sm:items-start gap-4">
-                <p className="text-[10px] font-normal tracking-[0.3em] uppercase text-neutral-500">
-                  Sitemap
-                </p>
-                <ul className="flex flex-col items-center sm:items-start gap-2">
-                  {[
-                    { to: "/", label: "Home" },
-                    { to: "/about", label: "About" },
-                    { to: "/portfolio", label: "Portfolio" },
-                    { to: "/contact", label: "Contact" },
-                  ].map(({ to, label }) => (
-                    <li key={to}>
-                      <Link
-                        to={to}
-                        className="text-xs font-light tracking-widest uppercase text-neutral-600 transition-colors duration-300 hover:text-amber-400"
-                      >
-                        {label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Legal */}
-              <div className="flex flex-col items-center sm:items-start gap-4">
-                <p className="text-[10px] font-normal tracking-[0.3em] uppercase text-neutral-500">
-                  Legal
-                </p>
-                <ul className="flex flex-col items-center sm:items-start gap-2">
-                  <li>
-                    <Link
-                      to="/terms"
-                      className="text-xs font-light tracking-widest uppercase text-neutral-600 transition-colors duration-300 hover:text-amber-400"
-                    >
-                      Terms of Service
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/privacy"
-                      className="text-xs font-light tracking-widest uppercase text-neutral-600 transition-colors duration-300 hover:text-amber-400"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="my-10 flex items-center gap-4">
-              <span className="h-px flex-1 bg-neutral-800/60" />
-              <span className="h-1 w-1 rotate-45 border border-amber-400/30" />
-              <span className="h-px flex-1 bg-neutral-800/60" />
-            </div>
-
-            {/* Bottom copyright */}
-            <p className="text-center text-[11px] tracking-widest uppercase text-neutral-700">
-              &copy; {new Date().getFullYear()} Maxx Slater Photography. All rights reserved.
-            </p>
+        {/* Wordmark slab */}
+        <Link
+          to="/contact"
+          data-cursor="BOOK"
+          className="group relative block overflow-hidden border-b-2 border-white px-4 py-10 text-white transition-colors duration-150 hover:text-black sm:py-16"
+        >
+          <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-300 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <span className="display text-[15vw] leading-[0.8] transition-transform duration-300 group-hover:translate-x-4 sm:text-[11vw]">
+              Let&rsquo;s work
+            </span>
+            <span className="mono shrink-0 text-xs sm:pb-3">
+              → START A PROJECT
+            </span>
           </div>
-        </footer>
-      )}
+        </Link>
+
+        {/* Info grid */}
+        <div className="grid grid-cols-2 border-b-2 border-white md:grid-cols-4">
+          <FooterCol title="Sitemap">
+            {navLinks.map(({ to, label }) => (
+              <FooterLink key={to} to={to}>
+                {label}
+              </FooterLink>
+            ))}
+          </FooterCol>
+
+          <FooterCol title="Legal">
+            <FooterLink to="/terms">Terms of Service</FooterLink>
+            <FooterLink to="/privacy">Privacy Policy</FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Contact">
+            <a
+              href="mailto:maxx@maxxslater.com"
+              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
+            >
+              MAXX@MAXXSLATER.COM
+            </a>
+            <span className="mono block text-[11px] text-white/70">
+              COLUMBUS, OHIO — USA
+            </span>
+          </FooterCol>
+
+          <FooterCol title="Elsewhere">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noreferrer"
+              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
+            >
+              INSTAGRAM ↗
+            </a>
+            <a
+              href="https://vimeo.com"
+              target="_blank"
+              rel="noreferrer"
+              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
+            >
+              VIMEO ↗
+            </a>
+          </FooterCol>
+        </div>
+
+        {/* Colophon */}
+        <div className="mono flex flex-col gap-2 px-4 py-4 text-[10px] text-white/40 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} MAXX SLATER PHOTOGRAPHY</span>
+          <span>ALL FRAMES SHOT + CURATED BY MAXX SLATER</span>
+          <span>BUILT RAW — NO TEMPLATES</span>
+        </div>
+      </footer>
     </div>
   );
 }
 
-/* ── Mobile hamburger menu ── */
-function MobileMenu({ pathname }: { pathname: string }) {
-  const [open, setOpen] = useState(false);
+/* ── Footer building blocks ───────────────────────────────── */
 
+function FooterCol({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="sm:hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="text-neutral-300 hover:text-amber-400 transition-colors"
-        aria-label="Toggle menu"
-      >
-        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          {open ? (
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
-      </button>
-
-      {open && (
-        <ul className="absolute left-0 right-0 top-full border-b border-neutral-800 bg-neutral-950/95 backdrop-blur-md flex flex-col items-center gap-4 py-6 text-sm font-light tracking-wider uppercase">
-          {navLinks.map(({ to, label }) => (
-            <li key={to}>
-              <Link
-                to={to}
-                onClick={() => setOpen(false)}
-                className={`transition-colors duration-300 hover:text-amber-400 ${
-                  pathname === to ? "text-amber-400" : "text-neutral-300"
-                }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="border-t-2 border-white px-4 py-6 md:border-t-0 md:border-l-2 md:first:border-l-0">
+      <p className="mono mb-4 text-[10px] text-white/40">{title}</p>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
+  );
+}
+
+function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
+  return (
+    <Link
+      to={to}
+      className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
+    >
+      {children}
+    </Link>
   );
 }

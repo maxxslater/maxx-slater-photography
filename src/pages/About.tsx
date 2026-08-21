@@ -1,93 +1,126 @@
 import { Link } from "react-router-dom";
+import Marquee from "../components/Marquee";
+import Reveal from "../components/Reveal";
+import ScrambleText from "../components/ScrambleText";
+import KineticWord from "../components/KineticWord";
+
+const facts = [
+  { k: "Name", v: "Maxx Slater" },
+  { k: "Role", v: "Independent Photographer" },
+  { k: "Base", v: "Columbus, Ohio" },
+  { k: "Shoots", v: "Portrait / Editorial / Live / Brand" },
+  { k: "Direction", v: "Minimal — you, as you are" },
+  { k: "Status", v: "Open for bookings" },
+];
 
 export default function About() {
   return (
-    <section className="min-h-screen bg-neutral-950">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 min-h-screen">
+    <section className="bg-black">
+      {/* ══ MASTHEAD ════════════════════════════════════════════ */}
+      <div className="border-b-2 border-white px-4 py-10 sm:py-14">
+        <p className="mono mb-5 text-[10px] text-white/50">
+          <ScrambleText text="[ 03 ] ABOUT" trigger="mount" />
+        </p>
+        <h1 className="display text-[20vw] leading-[0.78] sm:text-[15vw] lg:text-[12vw]">
+          <KineticWord text="ABOUT" />
+        </h1>
+      </div>
 
-        {/* ── Left: Portrait Image ── */}
-        <div className="relative overflow-hidden lg:min-h-screen">
-          <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-neutral-950/40" />
-
+      {/* ══ PORTRAIT + BIO ══════════════════════════════════════ */}
+      <div className="grid grid-cols-1 border-b-2 border-white lg:grid-cols-[minmax(0,420px)_1fr]">
+        {/* Portrait */}
+        <Reveal className="relative border-b-2 border-white lg:border-b-0 lg:border-r-2" flash>
           <img
             src="/images/portrait.jpg"
             alt="Maxx Slater — photographer portrait"
-            className="h-[55vh] w-full object-cover object-top lg:h-full lg:sticky lg:top-0"
+            className="h-full max-h-[70vh] w-full object-cover object-top grayscale contrast-125 lg:max-h-none"
           />
+          <span className="mono absolute left-0 top-0 border-b-2 border-r-2 border-white bg-black px-2 py-1 text-[9px]">
+            FIG. 01
+          </span>
+          <span className="mono absolute bottom-0 right-0 border-l-2 border-t-2 border-white bg-black px-2 py-1 text-[9px] text-white/60">
+            THE PHOTOGRAPHER
+          </span>
+        </Reveal>
 
-          {/* Mobile overlay name */}
-          <div className="absolute bottom-8 left-6 z-20 lg:hidden">
-            <p className="text-xs font-light tracking-[0.35em] uppercase text-neutral-400">
-              The Photographer
-            </p>
-          </div>
-        </div>
+        {/* Bio */}
+        <div className="flex flex-col justify-center px-4 py-10 sm:px-8 sm:py-16">
+          <p className="display text-4xl leading-[0.9] sm:text-6xl lg:text-7xl">
+            Hey,
+            <br />
+            I&rsquo;m Maxx.
+          </p>
 
-        {/* ── Right: Bio & Text ── */}
-        <div className="flex flex-col justify-center px-8 py-16 sm:px-12 lg:px-16 xl:px-24 lg:py-24">
-
-          {/* Section label */}
-          <div className="mb-8 flex items-center gap-4">
-            <span className="h-px w-8 bg-amber-400/60" />
-            <p className="text-xs font-light tracking-[0.35em] uppercase text-amber-400">
-              About Me
-            </p>
-          </div>
-
-          {/* Heading */}
-          <h1 className="mb-10 text-3xl sm:text-4xl lg:text-5xl font-extralight tracking-wide text-white leading-tight">
-            Hey, I'm{" "}
-            <span className="font-black">Maxx</span>.
-          </h1>
-
-          {/* Bio copy */}
-          <div className="space-y-6 text-base sm:text-lg font-light leading-relaxed text-neutral-400 mb-12">
+          <div className="mt-10 max-w-2xl space-y-6 text-base leading-relaxed text-white/80 sm:text-lg [&>p]:transition-colors">
             <p>
-              Based in{" "}
-              <span className="text-white font-normal">
+              An independent photographer based out of{" "}
+              <span className="bg-white px-1 font-semibold text-black">
                 Columbus, Ohio
-              </span>{" "}
-              with a global vision — I'm driven to create work that goes beyond
-              expectations,{" "}
-              <span className="text-white font-normal">
-                naturally
               </span>
-              . No overproduced setups, no forced smiles — just honest,
-              intentional images that actually feel like you.
+              .
             </p>
-
             <p>
-              Whether you need brand content, portraits, or something you
-              haven't quite figured out yet, I'd love to hear about it.{" "}
-              <span className="text-amber-400/90 font-normal">
-                Let's make something worth looking at.
-              </span>
+              My work seeks out the hidden moments — the moments that are
+              in-between other moments, where true emotion lives.
+            </p>
+            <p>
+              I won&rsquo;t ask you to smile more, or coach you to pose in an
+              awkward position. I&rsquo;ll only ask you to be yourself.
+            </p>
+            <p>
+              Please don&rsquo;t hesitate to reach out. I would love the
+              opportunity to work together.
             </p>
           </div>
 
-          {/* CTA */}
-          <Link
-            to="/contact"
-            className="group inline-flex items-center gap-3 self-start border border-amber-400/30 px-8 py-4 text-sm font-light tracking-[0.25em] uppercase text-amber-400 transition-all duration-500 hover:bg-amber-400 hover:text-neutral-950 hover:tracking-[0.35em]"
-          >
-            Let's Work Together
-
-            <svg
-              className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Link
+              to="/contact"
+              data-cursor="BOOK"
+              className="mono border-2 border-white bg-white px-8 py-4 text-center text-xs font-medium text-black transition-colors duration-100 hover:bg-black hover:text-white"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-              />
-            </svg>
-          </Link>
+              Book a session →
+            </Link>
+            <Link
+              to="/portfolio"
+              data-cursor="VIEW"
+              className="mono border-2 border-white px-8 py-4 text-center text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black"
+            >
+              See the work
+            </Link>
+          </div>
         </div>
       </div>
+
+      {/* ══ SPEC SHEET ══════════════════════════════════════════ */}
+      <div className="border-b-2 border-white">
+        <p className="mono border-b-2 border-white px-4 py-3 text-xs font-medium">
+          <ScrambleText text="[ 04 ] SPEC SHEET" />
+        </p>
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {facts.map(({ k, v }) => (
+            <div
+              key={k}
+              className="border-b-2 border-white px-4 py-5 last:border-b-0 sm:border-r-2 sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r-2 lg:[&:nth-child(3n)]:border-r-0"
+            >
+              <dt className="mono mb-2 text-[9px] text-white/40">{k}</dt>
+              <dd className="mono text-[12px] text-white">
+                <ScrambleText text={v} duration={500} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <Marquee
+        items={[
+          "BE YOURSELF",
+          "NO FORCED SMILES",
+          "THE MOMENTS IN BETWEEN",
+          "COLUMBUS, OHIO",
+        ]}
+        className="border-t-0"
+      />
     </section>
   );
 }

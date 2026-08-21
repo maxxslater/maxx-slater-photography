@@ -1,188 +1,224 @@
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-/* ── 12 Placeholder Slots ── */
-const placeholders = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  src: "",
-  alt: `Photo ${i + 1}`,
-}));
-
-/*
- * Grid pattern: alternating rows of tall/wide for visual rhythm.
- * Row 1: tall, square, wide
- * Row 2: wide, tall, square
- * Row 3: square, wide, tall
- * Row 4: tall, square, wide
- */
-const spanClasses: string[] = [
-  "col-span-1 row-span-2", // 1  tall
-  "col-span-1 row-span-1", // 2  square
-  "col-span-2 row-span-1", // 3  wide
-  "col-span-2 row-span-1", // 4  wide
-  "col-span-1 row-span-2", // 5  tall
-  "col-span-1 row-span-1", // 6  square
-  "col-span-1 row-span-1", // 7  square
-  "col-span-2 row-span-1", // 8  wide
-  "col-span-1 row-span-2", // 9  tall
-  "col-span-1 row-span-2", // 10 tall
-  "col-span-1 row-span-1", // 11 square
-  "col-span-2 row-span-1", // 12 wide
-];
+import FrameSlot from "../components/FrameSlot";
+import ScrambleText from "../components/ScrambleText";
+import Reveal from "../components/Reveal";
+import { frames, categories, spanFor } from "../data/portfolio";
 
 export default function Portfolio() {
+  const [filter, setFilter] = useState<string>("ALL");
   const [selected, setSelected] = useState<number | null>(null);
 
+  const visible = useMemo(
+    () => (filter === "ALL" ? frames : frames.filter((f) => f.category === filter)),
+    [filter]
+  );
+
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      setSelected((cur) => {
+        if (cur === null) return cur;
+        const i = visible.findIndex((f) => f === frames[cur]);
+        const next = (i + dir + visible.length) % visible.length;
+        return frames.indexOf(visible[next]);
+      });
+    },
+    [visible]
+  );
+
+  // Keyboard control for the lightbox
+  useEffect(() => {
+    if (selected === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+      if (e.key === "ArrowRight") step(1);
+      if (e.key === "ArrowLeft") step(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [selected, step]);
+
+  const current = selected !== null ? frames[selected] : null;
+
   return (
-    <section className="min-h-screen bg-neutral-950 px-4 sm:px-6 py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl">
-        {/* ── Header ── */}
-        <div className="mb-14 flex flex-col items-center text-center">
-          <div className="mb-6 flex items-center gap-4">
-            <span className="h-px w-8 bg-amber-400/60" />
-            <p className="text-xs font-light tracking-[0.35em] uppercase text-amber-400">
-              Selected Work
-            </p>
-            <span className="h-px w-8 bg-amber-400/60" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extralight tracking-wide text-white">
-            The <span className="font-black">Portfolio</span>
-          </h1>
-        </div>
-
-        {/* ── Grid ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] lg:auto-rows-[240px] gap-2 sm:gap-3">
-          {placeholders.map((item, i) => (
-            <motion.button
-              key={item.id}
-              onClick={() => setSelected(item.id)}
-              className={`group relative overflow-hidden rounded-sm bg-neutral-900 border border-neutral-800/50 cursor-pointer transition-colors hover:border-amber-400/30 ${spanClasses[i]}`}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              {item.src ? (
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              ) : (
-                /* Placeholder state */
-                <div className="flex h-full w-full flex-col items-center justify-center gap-3">
-                  <svg
-                    className="h-8 w-8 text-neutral-700 transition-colors group-hover:text-neutral-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1}
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                  <span className="text-xs tracking-[0.2em] uppercase text-neutral-700 font-light">
-                    {String(item.id).padStart(2, "0")}
-                  </span>
-                </div>
-              )}
-
-              {/* Hover overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-amber-400/0 transition-colors duration-500 group-hover:bg-amber-400/5" />
-            </motion.button>
-          ))}
-        </div>
+    <section className="bg-black">
+      {/* ══ MASTHEAD ════════════════════════════════════════════ */}
+      <div className="border-b-2 border-white px-4 py-10 sm:py-14">
+        <p className="mono mb-5 text-[10px] text-white/50">[ 02 ] PORTFOLIO</p>
+        <h1 className="display text-[18vw] leading-[0.78] sm:text-[14vw] lg:text-[11vw]">
+          <ScrambleText text="PORTFOLIO" trigger="mount" duration={700} />
+        </h1>
+        <p className="mono mt-6 max-w-md text-[11px] leading-relaxed text-white/60">
+          SELECTED WORK SHOT + CURATED BY MAXX SLATER.
+        </p>
       </div>
 
-      {/* ── Lightbox ── */}
+      {/* ══ FILTER BAR ══════════════════════════════════════════ */}
+      <div className="flex flex-wrap items-stretch border-b-2 border-white">
+        {["ALL", ...categories.map((c) => c.toUpperCase())].map((cat) => {
+          const active = filter === (cat === "ALL" ? "ALL" : cat);
+          const value =
+            cat === "ALL"
+              ? "ALL"
+              : categories.find((c) => c.toUpperCase() === cat) ?? "ALL";
+          return (
+            <button
+              key={cat}
+              onClick={() => setFilter(value)}
+              className={`mono border-r-2 border-white px-4 py-3 text-[10px] font-medium transition-colors duration-100 ${
+                active
+                  ? "bg-white text-black"
+                  : "bg-black text-white hover:bg-white hover:text-black"
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
+        <span className="mono ml-auto hidden items-center px-4 text-[10px] text-white/40 sm:flex">
+          {String(visible.length).padStart(2, "0")} FRAMES
+        </span>
+      </div>
+
+      {/* ══ GRID ════════════════════════════════════════════════
+          White container + 2px gaps = hard rules between every cell */}
+      <div className="grid auto-rows-[42vw] grid-cols-2 gap-0.5 border-b-2 border-white bg-white sm:auto-rows-[28vw] sm:grid-cols-3 lg:auto-rows-[19vw] lg:grid-cols-4">
+        {visible.map((frame, i) => {
+          const idx = frames.indexOf(frame);
+          return (
+            <Reveal
+              key={frame.title}
+              from={i % 2 === 0 ? "up" : "left"}
+              delay={(i % 4) * 0.06}
+              flash
+              className={`h-full ${spanFor[frame.size]}`}
+            >
+              <FrameSlot
+                frame={frame}
+                index={idx}
+                layoutId={`frame-${idx}`}
+                className="h-full"
+                onClick={() => setSelected(idx)}
+              />
+            </Reveal>
+          );
+        })}
+      </div>
+
+      {/* ══ END NOTE ════════════════════════════════════════════ */}
+      <div className="mono flex flex-col gap-2 px-4 py-6 text-[10px] text-white/40 sm:flex-row sm:justify-between">
+        <span>END OF INDEX</span>
+        <span>ALL IMAGES © MAXX SLATER — DO NOT REPRODUCE</span>
+      </div>
+
+      {/* ══ LIGHTBOX ════════════════════════════════════════════ */}
       <AnimatePresence>
-        {selected !== null && (
+        {current && selected !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/95 backdrop-blur-md p-4 sm:p-8"
+            transition={{ duration: 0.12 }}
+            className="fixed inset-0 z-[160] flex flex-col bg-black"
             onClick={() => setSelected(null)}
           >
-            {/* Close button */}
-            <button
-              onClick={() => setSelected(null)}
-              className="absolute top-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 text-neutral-400 transition-all duration-300 hover:border-amber-400 hover:text-amber-400 cursor-pointer"
-              aria-label="Close"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            {/* Image counter */}
-            <div className="absolute top-7 left-6 text-xs tracking-[0.2em] uppercase text-neutral-500 font-light">
-              {String(selected).padStart(2, "0")} / {String(placeholders.length).padStart(2, "0")}
-            </div>
-
-            {/* Full-size image / placeholder */}
+            {/* Top rail */}
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-h-[85vh] max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] overflow-hidden rounded-sm border border-neutral-800"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-b-2 border-white bg-black"
             >
-              {placeholders[selected - 1]?.src ? (
-                <img
-                  src={placeholders[selected - 1].src}
-                  alt={placeholders[selected - 1].alt}
-                  className="max-h-[85vh] w-auto object-contain"
-                />
-              ) : (
-                <div className="flex h-[50vh] w-[70vw] sm:w-[60vw] lg:w-[50vw] flex-col items-center justify-center gap-4 bg-neutral-900">
-                  <svg
-                    className="h-16 w-16 text-neutral-700"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={0.75}
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                  <p className="text-sm tracking-[0.2em] uppercase text-neutral-600 font-light">
-                    Image {String(selected).padStart(2, "0")}
-                  </p>
-                  <p className="text-xs text-neutral-700">
-                    Placeholder — add your photo here
-                  </p>
-                </div>
-              )}
+              <span className="mono flex items-center px-4 py-3 text-[10px] text-white/60">
+                {String(selected + 1).padStart(2, "0")} /{" "}
+                {String(frames.length).padStart(2, "0")}
+              </span>
+              <span className="mono hidden items-center px-4 text-[10px] text-white/60 sm:flex">
+                {current.title.toUpperCase()} — {current.category.toUpperCase()} /{" "}
+                {current.year}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(null);
+                }}
+                className="mono border-l-2 border-white px-5 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Close"
+              >
+                Close ✕
+              </button>
             </motion.div>
 
-            {/* Prev / Next arrows */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelected(selected > 1 ? selected - 1 : placeholders.length);
-              }}
-              className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 text-neutral-400 transition-all duration-300 hover:border-amber-400 hover:text-amber-400 cursor-pointer"
-              aria-label="Previous"
+            {/* Stage */}
+            <div
+              className="flex flex-1 items-center justify-center overflow-hidden p-4 sm:p-10"
+              onClick={(e) => e.stopPropagation()}
             >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelected(selected < placeholders.length ? selected + 1 : 1);
-              }}
-              className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-neutral-700 text-neutral-400 transition-all duration-300 hover:border-amber-400 hover:text-amber-400 cursor-pointer"
-              aria-label="Next"
+              {/* Shared element: the clicked cell physically flies into place */}
+              <motion.div
+                layoutId={`frame-${selected}`}
+                transition={{ duration: 0.42, ease: [0.85, 0, 0.15, 1] }}
+                className="flex max-h-full w-full max-w-3xl items-center justify-center"
+              >
+                {current.src ? (
+                  <img
+                    src={current.src}
+                    alt={current.alt ?? current.title}
+                    className="max-h-[72vh] max-w-full border-2 border-white object-contain"
+                  />
+                ) : (
+                  <div className="hatch flex aspect-[4/3] w-full flex-col items-center justify-center gap-4 border-2 border-white">
+                    <span className="display text-7xl text-white/20 sm:text-9xl">
+                      {String(selected + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mono text-[10px] text-white/50">
+                      EMPTY SLOT — ADD A PATH IN src/data/portfolio.ts
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+
+            {/* Bottom rail */}
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-t-2 border-white bg-black"
             >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
-            </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(-1);
+                }}
+                className="mono border-r-2 border-white px-6 py-3 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Previous"
+              >
+                ← Prev
+              </button>
+              <span className="mono flex items-center px-4 text-[10px] text-white/40 sm:hidden">
+                {current.title.toUpperCase()}
+              </span>
+              <span className="mono hidden flex-1 items-center justify-center text-[10px] text-white/30 sm:flex">
+                USE ← → KEYS / ESC TO CLOSE
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(1);
+                }}
+                className="mono border-l-2 border-white px-6 py-3 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Next"
+              >
+                Next →
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
