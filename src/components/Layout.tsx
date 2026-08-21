@@ -190,20 +190,12 @@ export default function Layout() {
 
           <FooterCol title="Elsewhere">
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/maxxmaade"
               target="_blank"
               rel="noreferrer"
               className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
             >
               INSTAGRAM ↗
-            </a>
-            <a
-              href="https://vimeo.com"
-              target="_blank"
-              rel="noreferrer"
-              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
-            >
-              VIMEO ↗
             </a>
           </FooterCol>
         </div>
