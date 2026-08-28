@@ -178,10 +178,10 @@ export default function Layout() {
 
           <FooterCol title="Contact">
             <a
-              href="mailto:maxx@maxxslater.com"
+              href="mailto:maxxslaterphoto@proton.me"
               className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
             >
-              MAXX@MAXXSLATER.COM
+              maxxslaterphoto@proton.me
             </a>
             <span className="mono block text-[11px] text-white/70">
               COLUMBUS, OHIO — USA
