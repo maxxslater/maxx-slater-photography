@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
 import Contact from "./pages/Contact";
+import Clients from "./pages/Clients";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 

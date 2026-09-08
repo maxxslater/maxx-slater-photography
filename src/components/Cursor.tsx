@@ -146,8 +146,8 @@ export default function Cursor() {
   if (!enabled) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[200] hidden md:block">
-      {/* Hairlines */}
+<div className="pointer-events-none fixed inset-0 z-[200]">
+        {/* Hairlines */}
       <div
         ref={hRef}
         className="absolute left-0 top-0 h-px w-full bg-white/20 will-change-transform"

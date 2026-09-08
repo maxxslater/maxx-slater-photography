@@ -19,7 +19,6 @@ export default function BootSequence() {
     const seen = sessionStorage.getItem("msp-booted");
     if (reduce || seen) return;
 
-    sessionStorage.setItem("msp-booted", "1");
     setShow(true);
     document.body.style.overflow = "hidden";
 
@@ -33,12 +32,18 @@ export default function BootSequence() {
       const eased = p < 0.7 ? p * 1.25 : 0.875 + (p - 0.7) * 0.417;
       setCount(Math.min(100, Math.round(eased * 100)));
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(() => setShow(false), 220);
-    };
+else {
+  setTimeout(() => {
+    sessionStorage.setItem("msp-booted", "1");
+    setShow(false);
+  }, 220);
+}    };
     raf = requestAnimationFrame(tick);
 
-    const skip = () => setShow(false);
-    window.addEventListener("keydown", skip);
+const skip = () => {
+  sessionStorage.setItem("msp-booted", "1");
+  setShow(false);
+};    window.addEventListener("keydown", skip);
     window.addEventListener("pointerdown", skip);
 
     return () => {

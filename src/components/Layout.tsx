@@ -8,7 +8,8 @@ const navLinks = [
   { to: "/", label: "Index", n: "01" },
   { to: "/portfolio", label: "Portfolio", n: "02" },
   { to: "/about", label: "About", n: "03" },
-  { to: "/contact", label: "Booking", n: "04" },
+  { to: "/clients", label: "Clients", n: "04" },
+  { to: "/contact", label: "Booking", n: "05" },
 ];
 
 export default function Layout() {

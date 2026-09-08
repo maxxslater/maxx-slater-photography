@@ -22,7 +22,7 @@ export default function Contact() {
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\n\nMessage:\n${message}`
     );
 
-    window.location.href = `mailto:maxx@maxxslater.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:maxxslaterphoto@proton.me?subject=${subject}&body=${body}`;
     setSubmitted(true);
   }
 
@@ -31,7 +31,7 @@ export default function Contact() {
       {/* ══ MASTHEAD ════════════════════════════════════════════ */}
       <div className="border-b-2 border-white px-4 py-10 sm:py-14">
         <p className="mono mb-5 text-[10px] text-white/50">
-          <ScrambleText text="[ 04 ] CONTACT" trigger="mount" />
+          <ScrambleText text="[ 05 ] CONTACT" trigger="mount" />
         </p>
         <h1 className="display text-[15vw] leading-[0.78] sm:text-[12vw] lg:text-[9vw]">
           <KineticWord text="CONTACT" className="block" />
@@ -72,7 +72,7 @@ export default function Contact() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="YOU@EMAIL.COM"
+                    placeholder="YOUR@EMAIL.COM"
                     className={fieldBase}
                   />
                 </Field>
@@ -124,7 +124,7 @@ export default function Contact() {
                 </p>
                 <p className="mono mt-6 text-[11px] leading-relaxed text-white/60">
                   YOUR MAIL CLIENT SHOULD HAVE OPENED. IF NOT, WRITE DIRECTLY TO
-                  MAXX@MAXXSLATER.COM — I&rsquo;LL GET BACK TO YOU SHORTLY.
+                  MAXXSLATERPHOTO@PROTON.ME — I&rsquo;LL GET BACK TO YOU SHORTLY.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -147,7 +147,7 @@ export default function Contact() {
             </p>
           </Reveal>
 
-          <SideRow label="Email" value="maxx@maxxslater.com" href="mailto:maxx@maxxslater.com" />
+          <SideRow label="Email" value="maxxslaterphoto@proton.me" href="mailto:maxxslaterphoto@p" />
           <SideRow label="Location" value="Columbus, Ohio — USA" />
           <SideRow label="Response time" value="Within 48 hours" />
           <SideRow label="Booking" value="Retainer secures the date" />
