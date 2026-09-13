@@ -42,7 +42,7 @@ export default function handler(
     });
   }
 
- const sessionToken = `${gallery}:${Date.now()}`;
+
 
 const sessionSecret = process.env.GALLERY_SESSION_SECRET;
 
