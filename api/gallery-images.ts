@@ -6,7 +6,7 @@ import crypto from "node:crypto";
   presignUrl,
 } from "@vercel/blob";
 
-export default function handler(
+export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
@@ -114,30 +114,50 @@ export default function handler(
       message: "Invalid gallery session",
     });
   }
-const prefix = `galleries/${gallery}/`;
+try {
+  const prefix = `galleries/${gallery}/`;
 
-const { blobs } = await list({
-  prefix,
-});
+  const { blobs } = await list({
+    prefix,
+  });
 
-const token = await issueSignedToken({
-  operations: ["get"],
-});
+  const images = await Promise.all(
+    blobs.map(async (blob) => {
+      const signedToken = await issueSignedToken({
+        pathname: blob.pathname,
+        operations: ["get"],
+        validUntil: Date.now() + 10 * 60 * 1000,
+      });
 
-const images = await Promise.all(
-  blobs.map(async (blob) => {
-    const { presignedUrl } = await presignUrl(token, {
-      pathname: blob.pathname,
-      operation: "get",
-      validUntil: Date.now() + 5 * 60 * 1000,
-    });
+      const { presignedUrl } = await presignUrl(signedToken, {
+        pathname: blob.pathname,
+        operation: "get",
+        validUntil: Date.now() + 5 * 60 * 1000,
+      });
 
-    return {
-      pathname: blob.pathname,
-      url: presignedUrl,
-    };
-  })
-);
+      return {
+        pathname: blob.pathname,
+        url: presignedUrl,
+      };
+    })
+  );
+
+  return res.status(200).json({
+    success: true,
+    gallery,
+    images,
+  });
+} catch (error) {
+  console.error("Gallery blob error:", error);
+
+  return res.status(500).json({
+    success: false,
+    message:
+      error instanceof Error
+        ? error.message
+        : "Unable to load gallery images",
+  });
+}
 
 return res.status(200).json({
   success: true,
