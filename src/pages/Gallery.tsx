@@ -79,6 +79,7 @@ useEffect(() => {
 );
 
 const imagesData = await imagesResponse.json();
+console.log("GALLERY IMAGES:", imagesData.images);
 
 if (!imagesResponse.ok || !imagesData.success) {
   setError(imagesData.message || "Unable to load gallery.");
@@ -279,7 +280,7 @@ setPassword("");
           </div>
 
           <div className="grid grid-cols-2 gap-0.5 bg-white sm:grid-cols-3">
-            {images.map((src, index) => (
+            {images.map((image, index) => (
               <button
                 key={image.pathname}
                 type="button"
@@ -347,7 +348,7 @@ setPassword("");
       onClick={(e) => e.stopPropagation()}
     >
       <img
-        src={images[selectedImage]}
+        src={images[selectedImage].url}
         alt={`Gallery image ${selectedImage + 1}`}
         className="h-full w-full object-contain"
       />
