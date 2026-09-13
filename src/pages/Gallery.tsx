@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 type GalleryImage = {
@@ -7,7 +8,19 @@ type GalleryImage = {
   originalUrl: string;
 };
 
-export default function Gallery() {
+type GalleryProps = {
+  galleryId: string;
+  title: string;
+  eventType: string;
+  dateLabel: string;
+};
+
+export default function Gallery({
+  galleryId,
+  title,
+  eventType,
+  dateLabel,
+}: GalleryProps) {
   const [password, setPassword] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -63,7 +76,7 @@ useEffect(() => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        gallery: "pink-pony-2026",
+        gallery: galleryId,
         password,
       }),
     });
@@ -76,7 +89,7 @@ useEffect(() => {
     }
 
     const imagesResponse = await fetch(
-  "/api/gallery-images?gallery=pink-pony-2026"
+  `/api/gallery-images?gallery=${encodeURIComponent(galleryId)}`
 );
 
 const imagesData = await imagesResponse.json();
@@ -104,16 +117,16 @@ setPassword("");
         </p>
 
         <h1 className="display text-[16vw] leading-[0.8] sm:text-[10vw]">
-          Pink Pony
+          {title}
         </h1>
 
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
           <p className="mono text-[11px] uppercase text-white/50">
-            Creator Event
+            {eventType}
           </p>
 
           <p className="mono text-[11px] uppercase text-white/50">
-            August 2026
+            {dateLabel}
           </p>
 
           {unlocked && (
@@ -217,7 +230,7 @@ setPassword("");
             <div className="mx-auto my-5 h-px w-16 bg-white/60" />
 
             <p className="text-lg text-white/70 sm:text-xl">
-              Welcome to the Pink Pony gallery.
+              Welcome to the {title} gallery.
             </p>
 
             <div className="mx-auto mt-6 flex max-w-xl items-center gap-5 border border-white/30 p-5 text-left sm:p-6">
@@ -316,7 +329,7 @@ setPassword("");
       )}
       </AnimatePresence>
       )}
-      {selectedImage !== null && (
+      {selectedImage !== null && createPortal(
   <div
     className="fixed inset-0 z-[200] flex h-dvh flex-col overflow-hidden bg-black"
     onClick={closeLightbox}
@@ -329,7 +342,7 @@ setPassword("");
       </div>
 
       <div className="mono hidden items-center text-[10px] uppercase tracking-wider text-white/30 sm:flex">
-        Pink Pony — August 2026
+        {title} — {dateLabel}
       </div>
 
       <button
@@ -350,7 +363,7 @@ setPassword("");
       onClick={(e) => e.stopPropagation()}
     >
       <img
-        src={images[selectedImage].previewUrl}
+        src={images[selectedImage].originalUrl}
         alt={`Gallery image ${selectedImage + 1}`}
         className="h-full w-full object-contain"
       />
@@ -395,7 +408,8 @@ setPassword("");
         Next →
       </button>
     </div>
-  </div>
+  </div>,
+  document.body
 )}
     </section>
   );
