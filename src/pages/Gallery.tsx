@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const testImages = [
   "/images/polo1.JPG",
@@ -12,6 +13,7 @@ const testImages = [
 export default function Gallery() {
   const [password, setPassword] = useState("");
   const [unlocked, setUnlocked] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false)
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
@@ -76,6 +78,7 @@ useEffect(() => {
     }
 
     setUnlocked(true);
+    setShowWelcome(true);
     setPassword("");
   } catch (err) {
     console.error(err);
@@ -170,9 +173,15 @@ useEffect(() => {
               </p>
             </div>
           </form>
-        </div>
-      ) : (
-        <div>
+       {!unlocked ? (
+  <div className="flex min-h-[55vh] items-center justify-center px-4 py-16 sm:px-6">
+    
+    // ALL OF YOUR PASSWORD FORM STUFF IS IN HERE
+
+  </div>
+) : (
+  <div>
+    // YOUR GALLERY STARTS HERE
           <div className="flex items-center justify-between border-b-2 border-white px-4 py-4 sm:px-6">
             <span className="mono text-[10px] uppercase tracking-[0.2em] text-white/50">
               Gallery Index
