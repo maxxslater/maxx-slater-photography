@@ -72,10 +72,28 @@ export default function App() {
                 path="/galleries/pink-pony-2026"
                 element={
                   <PageTransition>
-                    <Gallery />
+                    <Gallery
+                      galleryId="pink-pony-2026"
+                      title="Pink Pony"
+                      eventType="Creator Event"
+                      dateLabel="August 2026"
+                    />
                   </PageTransition>
                 }
                /> 
+              <Route
+                path="/galleries/polo-2026"
+                element={
+                  <PageTransition>
+                    <Gallery
+                      galleryId="polo-2026"
+                      title="Polo, Porsches & Pilates"
+                      eventType="Presented by Baker Creek Equestrian"
+                      dateLabel="2026"
+                    />
+                  </PageTransition>
+                }
+              />
             <Route
               path="/contact"
               element={
