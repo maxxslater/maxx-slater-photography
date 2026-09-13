@@ -117,6 +117,10 @@ export default async function handler(
 try {
   const prefix = `galleries/${gallery}/`;
 
+  const { blobs } = await list({
+  prefix,
+});
+
   const previewBlobs = blobs.filter((blob) =>
   blob.pathname.includes("/previews/")
 );
