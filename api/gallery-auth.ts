@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import crypto from "node:crypto";
 
 export default function handler(
   req: VercelRequest,
@@ -43,9 +44,32 @@ export default function handler(
 
  const sessionToken = `${gallery}:${Date.now()}`;
 
+const sessionSecret = process.env.GALLERY_SESSION_SECRET;
+
+if (!sessionSecret) {
+  return res.status(500).json({
+    success: false,
+    message: "Session configuration error",
+  });
+}
+
+const maxAge = 60 * 60 * 4;
+const expiresAt = Date.now() + maxAge * 1000;
+
+const payload = `${gallery}.${expiresAt}`;
+
+const signature = crypto
+  .createHmac("sha256", sessionSecret)
+  .update(payload)
+  .digest("hex");
+
+const sessionToken = `${payload}.${signature}`;
+
 res.setHeader(
   "Set-Cookie",
-  `gallery_session=${encodeURIComponent(sessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=14400`
+  `gallery_session=${encodeURIComponent(
+    sessionToken
+  )}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${maxAge}`
 );
 
 return res.status(200).json({
