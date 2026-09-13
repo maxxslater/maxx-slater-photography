@@ -132,6 +132,7 @@ try {
       const { presignedUrl } = await presignUrl(signedToken, {
         pathname: blob.pathname,
         operation: "get",
+        access: "private",
         validUntil: Date.now() + 5 * 60 * 1000,
       });
 
