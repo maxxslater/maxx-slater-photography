@@ -41,7 +41,14 @@ export default function handler(
     });
   }
 
-  return res.status(200).json({
-    success: true,
-  });
+ const sessionToken = `${gallery}:${Date.now()}`;
+
+res.setHeader(
+  "Set-Cookie",
+  `gallery_session=${encodeURIComponent(sessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=14400`
+);
+
+return res.status(200).json({
+  success: true,
+});
 }
