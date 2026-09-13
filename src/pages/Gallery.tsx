@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const testImages = [
   "/images/polo1.JPG",
@@ -13,7 +13,7 @@ const testImages = [
 export default function Gallery() {
   const [password, setPassword] = useState("");
   const [unlocked, setUnlocked] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false)
+  const [showWelcome, setShowWelcome] = useState(false);
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
@@ -173,15 +173,85 @@ useEffect(() => {
               </p>
             </div>
           </form>
-       {!unlocked ? (
-  <div className="flex min-h-[55vh] items-center justify-center px-4 py-16 sm:px-6">
-    
-    // ALL OF YOUR PASSWORD FORM STUFF IS IN HERE
+                  </div>
+      ) : showWelcome ? (
+        <motion.div
+          key="welcome"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="flex min-h-[65vh] items-center justify-center px-4 py-16 sm:px-6"
+        >
+          <div className="w-full max-w-3xl text-center">
 
-  </div>
-) : (
-  <div>
-    // YOUR GALLERY STARTS HERE
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-white/70 text-3xl"
+            >
+              🔓
+            </motion.div>
+
+            <p className="mono mb-4 text-[10px] uppercase tracking-[0.3em] text-white/40">
+              Authentication Complete
+            </p>
+
+            <h2 className="display text-5xl uppercase sm:text-7xl">
+              Access Granted
+            </h2>
+
+            <div className="mx-auto my-8 h-px w-16 bg-white/60" />
+
+            <p className="text-lg text-white/70 sm:text-xl">
+              Welcome to the Pink Pony gallery.
+            </p>
+
+            <div className="mx-auto mt-10 flex max-w-xl items-center gap-5 border border-white/30 p-5 text-left sm:p-6">
+              <div className="mono text-3xl">
+                ↓
+              </div>
+
+              <div>
+                <p className="mono mb-2 text-[10px] uppercase tracking-[0.2em] text-white">
+                  Hi-Res Images Available
+                </p>
+
+                <p className="text-sm leading-relaxed text-white/55">
+                  Open any image and select Download to save the full-resolution file.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowWelcome(false)}
+              className="mono mt-10 border-2 border-white px-8 py-5 text-xs uppercase tracking-[0.2em] transition-colors duration-200 hover:bg-white hover:text-black"
+            >
+              Enter Gallery →
+            </button>
+
+            <div className="mt-14 border-t border-white/15 pt-7">
+              <p className="mono text-[10px] uppercase tracking-[0.25em] text-white/40">
+                Let's Make Something Again.
+              </p>
+
+              <p className="mt-3 text-sm text-white/50">
+                Ready for another shoot?{" "}
+                <a
+                  href="/contact"
+                  className="text-white underline underline-offset-4 transition-opacity hover:opacity-60"
+                >
+                  Get in touch →
+                </a>
+              </p>
+            </div>
+
+          </div>
+        </motion.div>
+      ) : (
+        <div>
+      
           <div className="flex items-center justify-between border-b-2 border-white px-4 py-4 sm:px-6">
             <span className="mono text-[10px] uppercase tracking-[0.2em] text-white/50">
               Gallery Index
