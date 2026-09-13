@@ -1,5 +1,10 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import crypto from "node:crypto";
+ import {
+  list,
+  issueSignedToken,
+  presignUrl,
+} from "@vercel/blob";
 
 export default function handler(
   req: VercelRequest,
@@ -109,10 +114,35 @@ export default function handler(
       message: "Invalid gallery session",
     });
   }
+const prefix = `galleries/${gallery}/`;
 
-  return res.status(200).json({
-    success: true,
-    gallery,
-    images: [],
-  });
+const { blobs } = await list({
+  prefix,
+});
+
+const token = await issueSignedToken({
+  operations: ["get"],
+});
+
+const images = await Promise.all(
+  blobs.map(async (blob) => {
+    const { presignedUrl } = await presignUrl(token, {
+      pathname: blob.pathname,
+      operation: "get",
+      validUntil: Date.now() + 5 * 60 * 1000,
+    });
+
+    return {
+      pathname: blob.pathname,
+      url: presignedUrl,
+    };
+  })
+);
+
+return res.status(200).json({
+  success: true,
+  gallery,
+  images,
+});
+
 }
