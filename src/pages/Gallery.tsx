@@ -285,7 +285,10 @@ setPassword("");
               <button
                 key={image.pathname}
                 type="button"
-                onClick={() => setSelectedImage(index)}
+                onClick={() => {
+  alert(`OPEN IMAGE ${index}`);
+  setSelectedImage(index);
+}}
                 className="group relative aspect-[4/5] overflow-hidden bg-black"
               >
                 <img
