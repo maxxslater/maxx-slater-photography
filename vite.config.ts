@@ -8,17 +8,24 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss(), viteSingleFile()],
+export default defineConfig(({ command }) => ({
+  plugins: [
+    react(),
+    tailwindcss(),
+
+    // Only use this when actually building the site.
+    // Running it during dev can interfere with Vite's HTML handling.
+    ...(command === "build" ? [viteSingleFile()] : []),
+  ],
+
   server: {
     host: "0.0.0.0",
-    // Allow the sandboxed preview host (and any other tunnel domain)
     allowedHosts: true,
   },
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
-});
+}));

@@ -51,18 +51,37 @@ useEffect(() => {
   };
 }, [selectedImage]);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function handleSubmit(e: FormEvent) {
+  e.preventDefault();
 
-    // TEMPORARY local-only password test.
-    if (password.toLowerCase() === "pinkpony") {
-      setUnlocked(true);
-      setError("");
-    } else {
-      setError("Incorrect password. Please try again.");
+  setError("");
+
+  try {
+    const response = await fetch("/api/gallery-auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gallery: "pink-pony-2026",
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      setError(data.message || "Incorrect password.");
+      return;
     }
-  }
 
+    setUnlocked(true);
+    setPassword("");
+  } catch (err) {
+    console.error(err);
+    setError("Unable to verify password. Please try again.");
+  }
+}
   return (
     <section className="min-h-screen bg-black text-white">
       <div className="border-b-2 border-white px-4 py-12 sm:px-6 sm:py-16">
