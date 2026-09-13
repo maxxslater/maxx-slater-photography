@@ -1,14 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const testImages = [
-  "/images/polo1.JPG",
-  "/images/polo2.JPG",
-  "/images/polo3.JPG",
-  "/images/porsche1.JPG",
-  "/images/smoke.JPG",
-  "/images/tracks.JPG",
-];
+type GalleryImage = {
+  pathname: string;
+  url: string;
+};
 
 export default function Gallery() {
   const [password, setPassword] = useState("");
@@ -16,6 +12,7 @@ export default function Gallery() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [images, setImages] = useState<GalleryImage[]>([]);
 
 function closeLightbox() {
   setSelectedImage(null);
@@ -24,14 +21,14 @@ function closeLightbox() {
 function nextImage() {
   setSelectedImage((current) => {
     if (current === null) return null;
-    return (current + 1) % testImages.length;
+    return (current + 1) % images.length;
   });
 }
 
 function previousImage() {
   setSelectedImage((current) => {
     if (current === null) return null;
-    return (current - 1 + testImages.length) % testImages.length;
+    return (current - 1 + images.length) % images.length;
   });
 }
 
@@ -77,9 +74,21 @@ useEffect(() => {
       return;
     }
 
-    setUnlocked(true);
-    setShowWelcome(true);
-    setPassword("");
+    const imagesResponse = await fetch(
+  "/api/gallery-images?gallery=pink-pony-2026"
+);
+
+const imagesData = await imagesResponse.json();
+
+if (!imagesResponse.ok || !imagesData.success) {
+  setError(imagesData.message || "Unable to load gallery.");
+  return;
+}
+
+setImages(imagesData.images);
+setUnlocked(true);
+setShowWelcome(true);
+setPassword("");
   } catch (err) {
     console.error(err);
     setError("Unable to verify password. Please try again.");
@@ -265,20 +274,20 @@ useEffect(() => {
             </span>
 
             <span className="mono text-[10px] text-white/40">
-              {String(testImages.length).padStart(2, "0")} Images
+              {String(images.length).padStart(2, "0")} Images
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-0.5 bg-white sm:grid-cols-3">
-            {testImages.map((src, index) => (
+            {images.map((src, index) => (
               <button
-                key={src}
+                key={image.pathname}
                 type="button"
                 onClick={() => setSelectedImage(index)}
                 className="group relative aspect-[4/5] overflow-hidden bg-black"
               >
                 <img
-                  src={src}
+                  src={image.url}
                   alt={`Gallery image ${index + 1}`}
                   className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:scale-[1.04]"
                 />
@@ -313,7 +322,7 @@ useEffect(() => {
     <div className="flex items-stretch justify-between border-b-2 border-white">
       <div className="mono flex items-center px-4 text-[10px] text-white/50">
         {String(selectedImage + 1).padStart(2, "0")} /{" "}
-        {String(testImages.length).padStart(2, "0")}
+        {String(images.length).padStart(2, "0")}
       </div>
 
       <div className="mono hidden items-center text-[10px] uppercase tracking-wider text-white/30 sm:flex">
@@ -338,7 +347,7 @@ useEffect(() => {
       onClick={(e) => e.stopPropagation()}
     >
       <img
-        src={testImages[selectedImage]}
+        src={images[selectedImage]}
         alt={`Gallery image ${selectedImage + 1}`}
         className="h-full w-full object-contain"
       />
@@ -364,8 +373,8 @@ useEffect(() => {
       </div>
 
       <a
-        href={testImages[selectedImage]}
-        download
+        href={images[selectedImage].url}
+        download={images[selectedImage].pathname.split("/").pop()}
         onClick={(e) => e.stopPropagation()}
         className="mono flex items-center border-l-2 border-white px-5 py-4 text-xs hover:bg-white hover:text-black"
       >
