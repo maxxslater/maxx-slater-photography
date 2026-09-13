@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const testImages = [
   "/images/polo1.JPG",
@@ -174,13 +174,16 @@ useEffect(() => {
             </div>
           </form>
                   </div>
-      ) : showWelcome ? (
-        <motion.div
-          key="welcome"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
-          className="flex min-h-[65vh] items-center justify-center px-4 py-16 sm:px-6"
+      ) : (
+        <AnimatePresence mode="wait">
+            {showWelcome ? (
+                <motion.div
+                     key="welcome"
+                     initial={{ opacity: 0, y: 18 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: -24 }}
+                     transition={{ duration: 0.45, ease: "easeOut" }}
+                     className="flex min-h-[65vh] items-center justify-center px-4 py-16 sm:px-6"
         >
           <div className="w-full max-w-3xl text-center">
 
@@ -250,7 +253,12 @@ useEffect(() => {
           </div>
         </motion.div>
       ) : (
-        <div>
+        <motion.div
+            key="gallery"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+        >
       
           <div className="flex items-center justify-between border-b-2 border-white px-4 py-4 sm:px-6">
             <span className="mono text-[10px] uppercase tracking-[0.2em] text-white/50">
@@ -293,7 +301,9 @@ useEffect(() => {
             <span>END OF GALLERY</span>
             <span>PHOTOGRAPHY © MAXX SLATER</span>
           </div>
-        </div>
+        </motion.div>
+      )}
+      </AnimatePresence>
       )}
       {selectedImage !== null && (
   <div
