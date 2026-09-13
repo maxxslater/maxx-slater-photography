@@ -183,7 +183,7 @@ useEffect(() => {
                      animate={{ opacity: 1, y: 0 }}
                      exit={{ opacity: 0, y: -24 }}
                      transition={{ duration: 0.45, ease: "easeOut" }}
-                     className="flex min-h-[65vh] items-center justify-center px-4 py-16 sm:px-6"
+                     className="flex min-h-[50vh] items-center justify-center px-4 py-8 sm:px-6 sm:py-10"
         >
           <div className="w-full max-w-3xl text-center">
 
@@ -191,8 +191,7 @@ useEffect(() => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1, duration: 0.4 }}
-              className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-white/70 text-3xl"
-            >
+            className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/70 text-2xl"            >
               🔓
             </motion.div>
 
@@ -204,13 +203,13 @@ useEffect(() => {
               Access Granted
             </h2>
 
-            <div className="mx-auto my-8 h-px w-16 bg-white/60" />
+            <div className="mx-auto my-5 h-px w-16 bg-white/60" />
 
             <p className="text-lg text-white/70 sm:text-xl">
               Welcome to the Pink Pony gallery.
             </p>
 
-            <div className="mx-auto mt-10 flex max-w-xl items-center gap-5 border border-white/30 p-5 text-left sm:p-6">
+            <div className="mx-auto mt-6 flex max-w-xl items-center gap-5 border border-white/30 p-5 text-left sm:p-6">
               <div className="mono text-3xl">
                 ↓
               </div>
@@ -229,12 +228,12 @@ useEffect(() => {
             <button
               type="button"
               onClick={() => setShowWelcome(false)}
-              className="mono mt-10 border-2 border-white px-8 py-5 text-xs uppercase tracking-[0.2em] transition-colors duration-200 hover:bg-white hover:text-black"
+              className="mono mt-7 border-2 border-white px-8 py-5 text-xs uppercase tracking-[0.2em] transition-colors duration-200 hover:bg-white hover:text-black"
             >
               Enter Gallery →
             </button>
 
-            <div className="mt-14 border-t border-white/15 pt-7">
+            <div className="mt-9 border-t border-white/15 pt-7">
               <p className="mono text-[10px] uppercase tracking-[0.25em] text-white/40">
                 Let's Make Something Again.
               </p>
@@ -307,7 +306,7 @@ useEffect(() => {
       )}
       {selectedImage !== null && (
   <div
-    className="fixed inset-0 z-[200] flex flex-col bg-black"
+    className="fixed inset-0 z-[200] flex h-dvh flex-col overflow-hidden bg-black"
     onClick={closeLightbox}
   >
     {/* Top rail */}
@@ -335,13 +334,13 @@ useEffect(() => {
 
     {/* Image stage */}
     <div
-      className="flex min-h-0 flex-1 items-center justify-center p-4 sm:p-8"
+      className="flex min-h-0 flex-1 items-center justify-center p-2 sm:p-4"
       onClick={(e) => e.stopPropagation()}
     >
       <img
         src={testImages[selectedImage]}
         alt={`Gallery image ${selectedImage + 1}`}
-        className="max-h-full max-w-full object-contain"
+        className="h-full w-full object-contain"
       />
     </div>
 
