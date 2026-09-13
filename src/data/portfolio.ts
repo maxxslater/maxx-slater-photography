@@ -132,6 +132,13 @@ export const frames: Frame[] = [
     year: "2026",
     size: "tall",
   },
+  {
+    src: "/images/hayden1.jpg",
+    title: "Hayden is on Instagram @haydenseger_modeling", 
+    category: "Portrait",
+    year:"2026",
+    size: "tall",
+  }
 ];
 
 /** Frames flagged for the home page strip (falls back to the first three). */

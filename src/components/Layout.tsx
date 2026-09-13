@@ -7,6 +7,7 @@ import ScrambleText from "./ScrambleText";
 const navLinks = [
   { to: "/", label: "Index", n: "01" },
   { to: "/portfolio", label: "Portfolio", n: "02" },
+  { to: "/galleries", label: "Galleries", n: "03"},
   { to: "/about", label: "About", n: "03" },
   { to: "/clients", label: "Clients", n: "04" },
   { to: "/contact", label: "Booking", n: "05" },

@@ -13,6 +13,9 @@ import Contact from "./pages/Contact";
 import Clients from "./pages/Clients";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import Galleries from "./pages/Galleries";
+import Gallery from "./pages/Gallery";
+
 
 export default function App() {
   const location = useLocation();
@@ -58,6 +61,22 @@ export default function App() {
               }
             />
             <Route
+              path="/galleries"
+              element={
+                <PageTransition>
+                  <Galleries />
+                  </PageTransition>
+                  }
+              />
+              <Route
+                path="/galleries/pink-pony-2026"
+                element={
+                  <PageTransition>
+                    <Gallery />
+                  </PageTransition>
+                }
+               /> 
+            <Route
               path="/contact"
               element={
                 <PageTransition>
@@ -81,6 +100,14 @@ export default function App() {
                 </PageTransition>
               }
             />
+            <Route
+  path="/clients"
+  element={
+    <PageTransition>
+      <Clients />
+    </PageTransition>
+  }
+/>
           </Route>
         </Routes>
       </AnimatePresence>
