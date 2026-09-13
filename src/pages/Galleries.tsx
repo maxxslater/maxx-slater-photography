@@ -108,11 +108,11 @@ export default function Galleries() {
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <h2 className="display text-5xl leading-none sm:text-6xl">
-                      Polo
+                      Polo, Porsches &amp; Pilates
                     </h2>
 
                     <p className="mono mt-3 text-[10px] uppercase tracking-wider text-white/50">
-                      Event Collection
+                      Baker Creek Equestrian
                     </p>
                   </div>
 
