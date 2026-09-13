@@ -47,7 +47,11 @@ export default function Galleries() {
               data-cursor="OPEN"
               className="group relative min-h-[480px] overflow-hidden bg-black"
             >
-              <div className="absolute inset-0 bg-white/[0.04] transition-transform duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:scale-[1.03]" />
+             <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+  <span className="select-none text-[220px] leading-none text-white/[0.06] grayscale opacity-50 transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 sm:text-[300px]">
+    🔒
+  </span>
+</div>
 
               <div className="absolute right-4 top-4 border border-white/40 bg-black px-3 py-2">
                 <span className="mono text-[9px] uppercase tracking-wider">
@@ -88,7 +92,11 @@ export default function Galleries() {
               data-cursor="OPEN"
               className="group relative min-h-[480px] overflow-hidden bg-black"
             >
-              <div className="absolute inset-0 bg-white/[0.04] transition-transform duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:scale-[1.03]" />
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+  <span className="select-none text-[220px] leading-none text-white/[0.06] grayscale opacity-50 transition-all duration-500 group-hover:scale-110 group-hover:opacity-80 sm:text-[300px]">
+    🔒
+  </span>
+</div>
 
               <div className="absolute right-4 top-4 border border-white/40 bg-black px-3 py-2">
                 <span className="mono text-[9px] uppercase tracking-wider">
