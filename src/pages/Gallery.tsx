@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 type GalleryImage = {
   pathname: string;
-  url: string;
+  previewUrl: string;
+  originalUrl: string;
 };
 
 export default function Gallery() {
@@ -288,7 +289,7 @@ setPassword("");
                 className="group relative aspect-[4/5] overflow-hidden bg-black"
               >
                 <img
-                  src={image.url}
+                  src={image.previewUrl}
                   alt={`Gallery image ${index + 1}`}
                   className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:scale-[1.04]"
                 />
@@ -348,7 +349,7 @@ setPassword("");
       onClick={(e) => e.stopPropagation()}
     >
       <img
-        src={images[selectedImage].url}
+        src={images[selectedImage].previewUrl}
         alt={`Gallery image ${selectedImage + 1}`}
         className="h-full w-full object-contain"
       />
@@ -374,7 +375,7 @@ setPassword("");
       </div>
 
       <a
-        href={images[selectedImage].url}
+        href={images[selectedImage].originalUrl}
         download={images[selectedImage].pathname.split("/").pop()}
         onClick={(e) => e.stopPropagation()}
         className="mono flex items-center border-l-2 border-white px-5 py-4 text-xs hover:bg-white hover:text-black"

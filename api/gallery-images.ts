@@ -117,48 +117,60 @@ export default async function handler(
 try {
   const prefix = `galleries/${gallery}/`;
 
-  const { blobs } = await list({
-    prefix,
-  });
+  const previewBlobs = blobs.filter((blob) =>
+  blob.pathname.includes("/previews/")
+);
 
-  const images = await Promise.all(
-    blobs.map(async (blob) => {
-      const signedToken = await issueSignedToken({
-        pathname: blob.pathname,
-        operations: ["get"],
-        validUntil: Date.now() + 10 * 60 * 1000,
-      });
+const images = await Promise.all(
+  previewBlobs.map(async (previewBlob) => {
+    const fileName = previewBlob.pathname.split("/").pop();
 
-      const { presignedUrl } = await presignUrl(signedToken, {
-        pathname: blob.pathname,
+    if (!fileName) {
+      throw new Error("Invalid preview pathname");
+    }
+
+    const originalPath =
+      `galleries/${gallery}/originals/${fileName}`;
+
+    const previewToken = await issueSignedToken({
+      pathname: previewBlob.pathname,
+      operations: ["get"],
+      validUntil: Date.now() + 10 * 60 * 1000,
+    });
+
+    const originalToken = await issueSignedToken({
+      pathname: originalPath,
+      operations: ["get"],
+      validUntil: Date.now() + 10 * 60 * 1000,
+    });
+
+    const { presignedUrl: previewUrl } = await presignUrl(
+      previewToken,
+      {
+        pathname: previewBlob.pathname,
         operation: "get",
         access: "private",
         validUntil: Date.now() + 5 * 60 * 1000,
-      });
+      }
+    );
 
-      return {
-        pathname: blob.pathname,
-        url: presignedUrl,
-      };
-    })
-  );
+    const { presignedUrl: originalUrl } = await presignUrl(
+      originalToken,
+      {
+        pathname: originalPath,
+        operation: "get",
+        access: "private",
+        validUntil: Date.now() + 5 * 60 * 1000,
+      }
+    );
 
-  return res.status(200).json({
-    success: true,
-    gallery,
-    images,
-  });
-} catch (error) {
-  console.error("Gallery blob error:", error);
-
-  return res.status(500).json({
-    success: false,
-    message:
-      error instanceof Error
-        ? error.message
-        : "Unable to load gallery images",
-  });
-}
+    return {
+      pathname: originalPath,
+      previewUrl,
+      originalUrl,
+    };
+  })
+);
 
 return res.status(200).json({
   success: true,
