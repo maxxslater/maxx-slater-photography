@@ -127,23 +127,8 @@ try {
 
 const images = await Promise.all(
   previewBlobs.map(async (previewBlob) => {
-    const fileName = previewBlob.pathname.split("/").pop();
-
-    if (!fileName) {
-      throw new Error("Invalid preview pathname");
-    }
-
-    const originalPath =
-      `galleries/${gallery}/originals/${fileName}`;
-
     const previewToken = await issueSignedToken({
       pathname: previewBlob.pathname,
-      operations: ["get"],
-      validUntil: Date.now() + 10 * 60 * 1000,
-    });
-
-    const originalToken = await issueSignedToken({
-      pathname: originalPath,
       operations: ["get"],
       validUntil: Date.now() + 10 * 60 * 1000,
     });
@@ -158,20 +143,9 @@ const images = await Promise.all(
       }
     );
 
-    const { presignedUrl: originalUrl } = await presignUrl(
-      originalToken,
-      {
-        pathname: originalPath,
-        operation: "get",
-        access: "private",
-        validUntil: Date.now() + 5 * 60 * 1000,
-      }
-    );
-
     return {
-      pathname: originalPath,
+      pathname: previewBlob.pathname,
       previewUrl,
-      originalUrl,
     };
   })
 );

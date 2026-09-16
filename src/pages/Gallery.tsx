@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 type GalleryImage = {
   pathname: string;
   previewUrl: string;
-  originalUrl: string;
 };
 
 type GalleryProps = {
@@ -388,14 +387,7 @@ setPassword("");
         </span>
       </div>
 
-      <a
-        href={images[selectedImage].originalUrl}
-        download={images[selectedImage].pathname.split("/").pop()}
-        onClick={(e) => e.stopPropagation()}
-        className="mono flex items-center border-l-2 border-white px-5 py-4 text-xs hover:bg-white hover:text-black"
-      >
-        Download ↓
-      </a>
+      
 
       <button
         type="button"
