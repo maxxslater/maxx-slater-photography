@@ -7,17 +7,17 @@ import ScrambleText from "./ScrambleText";
 const navLinks = [
   { to: "/", label: "Index", n: "01" },
   { to: "/portfolio", label: "Portfolio", n: "02" },
-  { to: "/galleries", label: "Galleries", n: "03"},
-  { to: "/about", label: "About", n: "03" },
-  { to: "/clients", label: "Clients", n: "04" },
-  { to: "/contact", label: "Booking", n: "05" },
+  { to: "/fashion", label: "Fashion", n: "03" },
+  { to: "/galleries", label: "Galleries", n: "04" },
+  { to: "/about", label: "About", n: "05" },
+  { to: "/clients", label: "Clients", n: "06" },
+  { to: "/contact", label: "Booking", n: "07" },
 ];
 
 export default function Layout() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
 
-  // Close the mobile drawer on navigation and lock scroll while it is open
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -28,7 +28,6 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-black text-white">
-      {/* ══ STATUS BAR ══════════════════════════════════════════ */}
       <div className="hidden border-b border-white/25 bg-black md:block">
         <div className="mono flex items-center justify-between px-4 py-1.5 text-[10px] text-white/60">
           <span>39.9612° N / 82.9988° W — COLUMBUS, OHIO</span>
@@ -40,10 +39,8 @@ export default function Layout() {
         </div>
       </div>
 
-      {/* ══ HEADER ══════════════════════════════════════════════ */}
       <header className="sticky top-0 z-50 border-b-2 border-white bg-black">
         <nav className="flex items-stretch justify-between">
-          {/* Brand */}
           <Link
             to="/"
             data-cursor="HOME"
@@ -52,7 +49,6 @@ export default function Layout() {
             <BrandLogo size="sm" />
           </Link>
 
-          {/* Desktop nav — each link is its own hard cell */}
           <ul className="hidden items-stretch md:flex">
             {navLinks.map(({ to, label, n }) => {
               const active = pathname === to;
@@ -61,26 +57,21 @@ export default function Layout() {
                   <Link
                     to={to}
                     data-cursor={label.toUpperCase()}
-                    className={`mono group relative flex items-center gap-2 overflow-hidden border-l-2 border-white px-5 text-xs font-medium transition-colors duration-150 lg:px-7 ${
-                      active
-                        ? "bg-white text-black"
-                        : "bg-black text-white hover:text-black"
+                    className={`mono group relative flex items-center gap-2 overflow-hidden border-l-2 border-white px-3 text-xs font-medium transition-colors duration-150 lg:px-5 ${
+                      active ? "bg-white text-black" : "bg-black text-white hover:text-black"
                     }`}
                   >
                     {!active && (
                       <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-200 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
                     )}
                     <span className="relative text-[9px] opacity-50">{n}</span>
-                    <span className="relative">
-                      <ScrambleText text={label} trigger="hover" duration={380} />
-                    </span>
+                    <span className="relative"><ScrambleText text={label} trigger="hover" duration={380} /></span>
                   </Link>
                 </li>
               );
             })}
           </ul>
 
-          {/* Mobile trigger */}
           <button
             onClick={() => setOpen(true)}
             className="mono border-l-2 border-white px-5 text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black md:hidden"
@@ -92,7 +83,6 @@ export default function Layout() {
         </nav>
       </header>
 
-      {/* ══ MOBILE DRAWER ═══════════════════════════════════════ */}
       {open && (
         <div className="fixed inset-0 z-[100] flex flex-col bg-black md:hidden">
           <div className="flex items-center justify-between border-b-2 border-white px-4 py-3">
@@ -105,7 +95,6 @@ export default function Layout() {
               Close ✕
             </button>
           </div>
-
           <ul className="flex flex-1 flex-col">
             {navLinks.map(({ to, label, n }) => (
               <li key={to} className="flex-1 border-b-2 border-white">
@@ -120,33 +109,19 @@ export default function Layout() {
               </li>
             ))}
           </ul>
-
-          <div className="mono px-4 py-4 text-[10px] text-white/50">
-            MAXX SLATER PHOTOGRAPHY — COLUMBUS, OH
-          </div>
+          <div className="mono px-4 py-4 text-[10px] text-white/50">MAXX SLATER PHOTOGRAPHY — COLUMBUS, OH</div>
         </div>
       )}
 
-      {/* ══ PAGE ════════════════════════════════════════════════ */}
-      <main className="relative flex-1">
-        <Outlet />
-      </main>
+      <main className="relative flex-1"><Outlet /></main>
 
-      {/* ══ FOOTER ══════════════════════════════════════════════ */}
       <footer className="border-t-2 border-white bg-black">
         <Marquee
-          items={[
-            "MAXX SLATER PHOTOGRAPHY",
-            "COLUMBUS, OHIO",
-            "AVAILABLE FOR WORK",
-            "PORTRAIT / EDITORIAL / LIVE",
-          ]}
+          items={["MAXX SLATER PHOTOGRAPHY", "COLUMBUS, OHIO", "AVAILABLE FOR WORK", "PORTRAIT / EDITORIAL / LIVE"]}
           invert
           slow
           className="border-t-0"
         />
-
-        {/* Wordmark slab */}
         <Link
           to="/contact"
           data-cursor="BOOK"
@@ -154,55 +129,26 @@ export default function Layout() {
         >
           <span className="absolute inset-0 -translate-y-full bg-white transition-transform duration-300 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-y-0" />
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <span className="display text-[15vw] leading-[0.8] transition-transform duration-300 group-hover:translate-x-4 sm:text-[11vw]">
-              Let&rsquo;s work
-            </span>
-            <span className="mono shrink-0 text-xs sm:pb-3">
-              → START A PROJECT
-            </span>
+            <span className="display text-[15vw] leading-[0.8] transition-transform duration-300 group-hover:translate-x-4 sm:text-[11vw]">Let&rsquo;s work</span>
+            <span className="mono shrink-0 text-xs sm:pb-3">→ START A PROJECT</span>
           </div>
         </Link>
-
-        {/* Info grid */}
         <div className="grid grid-cols-2 border-b-2 border-white md:grid-cols-4">
           <FooterCol title="Sitemap">
-            {navLinks.map(({ to, label }) => (
-              <FooterLink key={to} to={to}>
-                {label}
-              </FooterLink>
-            ))}
+            {navLinks.map(({ to, label }) => <FooterLink key={to} to={to}>{label}</FooterLink>)}
           </FooterCol>
-
           <FooterCol title="Legal">
             <FooterLink to="/terms">Terms of Service</FooterLink>
             <FooterLink to="/privacy">Privacy Policy</FooterLink>
           </FooterCol>
-
           <FooterCol title="Contact">
-            <a
-              href="mailto:maxxslaterphoto@proton.me"
-              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
-            >
-              maxxslaterphoto@proton.me
-            </a>
-            <span className="mono block text-[11px] text-white/70">
-              COLUMBUS, OHIO — USA
-            </span>
+            <a href="mailto:maxxslaterphoto@proton.me" className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline">maxxslaterphoto@proton.me</a>
+            <span className="mono block text-[11px] text-white/70">COLUMBUS, OHIO — USA</span>
           </FooterCol>
-
           <FooterCol title="Elsewhere">
-            <a
-              href="https://instagram.com/maxxmaade"
-              target="_blank"
-              rel="noreferrer"
-              className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
-            >
-              INSTAGRAM ↗
-            </a>
+            <a href="https://instagram.com/maxxmaade" target="_blank" rel="noreferrer" className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline">INSTAGRAM ↗</a>
           </FooterCol>
         </div>
-
-        {/* Colophon */}
         <div className="mono flex flex-col gap-2 px-4 py-4 text-[10px] text-white/40 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} MAXX SLATER PHOTOGRAPHY</span>
           <span>ALL FRAMES SHOT + CURATED BY MAXX SLATER</span>
@@ -213,15 +159,7 @@ export default function Layout() {
   );
 }
 
-/* ── Footer building blocks ───────────────────────────────── */
-
-function FooterCol({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="border-t-2 border-white px-4 py-6 md:border-t-0 md:border-l-2 md:first:border-l-0">
       <p className="mono mb-4 text-[10px] text-white/40">{title}</p>
@@ -231,12 +169,5 @@ function FooterCol({
 }
 
 function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
-  return (
-    <Link
-      to={to}
-      className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline"
-    >
-      {children}
-    </Link>
-  );
+  return <Link to={to} className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline">{children}</Link>;
 }
