@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import BrandLogo from "./BrandLogo";
 import Marquee from "./Marquee";
 import ScrambleText from "./ScrambleText";
-import { Analytics } from "@vercel/analytics/next";
 
 const navLinks = [
   { to: "/", label: "Index", n: "01" },
