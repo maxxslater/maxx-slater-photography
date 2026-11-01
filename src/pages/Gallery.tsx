@@ -362,7 +362,7 @@ setPassword("");
       onClick={(e) => e.stopPropagation()}
     >
       <img
-        src={images[selectedImage].originalUrl}
+        src={images[selectedImage].previewUrl}
         alt={`Gallery image ${selectedImage + 1}`}
         className="h-full w-full object-contain"
       />

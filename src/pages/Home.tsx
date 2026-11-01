@@ -1,196 +1,227 @@
-import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import Marquee from "../components/Marquee";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import FrameSlot from "../components/FrameSlot";
-import KineticWord from "../components/KineticWord";
 import ScrambleText from "../components/ScrambleText";
 import Reveal from "../components/Reveal";
-import { featuredFrames, frames } from "../data/portfolio";
+import { frames, categories, spanFor } from "../data/portfolio";
 
-const indexLinks = [
-  { to: "/portfolio", label: "Portfolio", n: "01", note: "Selected frames" },
-  { to: "/about", label: "About", n: "02", note: "Who is behind the camera" },
-  { to: "/contact", label: "Booking", n: "03", note: "Start a project" },
-];
+export default function Portfolio() {
+  const [filter, setFilter] = useState<string>("ALL");
+  const [selected, setSelected] = useState<number | null>(null);
 
-export default function Home() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const visible = useMemo(
+    () => (filter === "ALL" ? frames : frames.filter((f) => f.category === filter)),
+    [filter]
+  );
 
-  // The wordmark sinks and dims as the page scrolls past it
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
-  const gridShift = useTransform(scrollYProgress, [0, 1], ["0px", "-90px"]);
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      setSelected((cur) => {
+        if (cur === null) return cur;
+        const i = visible.findIndex((f) => f === frames[cur]);
+        const next = (i + dir + visible.length) % visible.length;
+        return frames.indexOf(visible[next]);
+      });
+    },
+    [visible]
+  );
+
+  // Keyboard control for the lightbox
+  useEffect(() => {
+    if (selected === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+      if (e.key === "ArrowRight") step(1);
+      if (e.key === "ArrowLeft") step(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [selected, step]);
+
+  const current = selected !== null ? frames[selected] : null;
 
   return (
-    <div className="bg-black">
-      {/* ══ HERO ════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative overflow-hidden border-b-2 border-white">
-        <motion.div
-          className="grid-lines absolute inset-0"
-          style={{ y: gridShift }}
-          aria-hidden="true"
-        />
+    <section className="bg-black">
+      {/* ══ MASTHEAD ════════════════════════════════════════════ */}
+      <div className="border-b-2 border-white px-4 py-10 sm:py-14">
+        <p className="mono mb-5 text-[10px] text-white/50">[ 02 ] PORTFOLIO</p>
+        <h1 className="display text-[18vw] leading-[0.78] sm:text-[14vw] lg:text-[11vw]">
+          <ScrambleText text="PORTFOLIO" trigger="mount" duration={700} />
+        </h1>
+        <p className="mono mt-6 max-w-md text-[11px] leading-relaxed text-white/60">
+          Portrait, editorial, live event, documentary, and automotive photography by Maxx Slater, based in Columbus, Ohio.
+        </p>
+      </div>
 
-        <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_320px]">
-          {/* Wordmark */}
-          <motion.div
-            style={{ y: heroY, opacity: heroOpacity }}
-            className="flex flex-col justify-center px-4 py-14 sm:px-6 sm:py-20 lg:py-28"
-          >
-            <p className="mono mb-6 text-[10px] text-white/50 sm:text-xs">
-              <ScrambleText
-                text="[ PHOTOGRAPHER — COLUMBUS, OHIO ]"
-                trigger="mount"
-                duration={900}
-              />
-            </p>
+      {/* ══ FILTER BAR ══════════════════════════════════════════ */}
+      <div className="flex flex-wrap items-stretch border-b-2 border-white">
+        {["ALL", ...categories.map((c) => c.toUpperCase())].map((cat) => {
+          const active = filter === (cat === "ALL" ? "ALL" : cat);
+          const value =
+            cat === "ALL"
+              ? "ALL"
+              : categories.find((c) => c.toUpperCase() === cat) ?? "ALL";
+          return (
+            <button
+              key={cat}
+              onClick={() => setFilter(value)}
+              className={`mono border-r-2 border-white px-4 py-3 text-[10px] font-medium transition-colors duration-100 ${
+                active
+                  ? "bg-white text-black"
+                  : "bg-black text-white hover:bg-white hover:text-black"
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
+        <span className="mono ml-auto hidden items-center px-4 text-[10px] text-white/40 sm:flex">
+          {String(visible.length).padStart(2, "0")} FRAMES
+        </span>
+      </div>
 
-            {/* Letters inflate along the variable width axis as the pointer passes */}
-            <h1 className="display text-[19vw] leading-[0.78] sm:text-[16vw] lg:text-[13vw]">
-              <KineticWord text="MAXX" className="block" />
-              <KineticWord text="SLATER" className="block stroke" />
-            </h1>
-
-            <p className="display-wide mt-6 max-w-2xl text-lg leading-tight sm:text-2xl lg:text-3xl">
-              The moments in between other moments — where true emotion lives.
-            </p>
-
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Link
-                to="/portfolio"
-                className="mono border-2 border-white px-8 py-4 text-center text-xs font-medium transition-colors duration-100 hover:bg-white hover:text-black"
-              >
-                View the work →
-              </Link>
-              <Link
-                to="/contact"
-                className="mono border-2 border-white bg-white px-8 py-4 text-center text-xs font-medium text-black transition-colors duration-100 hover:bg-black hover:text-white"
-              >
-                Book a session
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Spec column */}
-          <aside className="flex flex-col border-t-2 border-white lg:border-l-2 lg:border-t-0">
-            <Spec label="Based" value="Columbus, OH" />
-            <Spec label="Shooting" value="Portrait / Editorial / Live" />
-            <Spec label="Approach" value="No posing. No forced smiles." />
-            <Spec label="Frames" value={`${frames.length} in the index`} />
-            <div className="mono flex flex-1 items-end justify-between px-4 py-4 text-[10px] text-white/40">
-              <span>SCROLL</span>
-              <span aria-hidden="true">↓</span>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      {/* ══ TICKER ══════════════════════════════════════════════ */}
-      <Marquee
-        items={[
-          "SHOT + CURATED BY MAXX SLATER",
-          "AVAILABLE FOR COMMISSIONS",
-          "COLUMBUS / OHIO / EVERYWHERE",
-          "BE YOURSELF",
-        ]}
-        invert
-        className="border-t-0"
-      />
-
-      {/* ══ FEATURED STRIP ══════════════════════════════════════ */}
-      <section className="border-b-2 border-white">
-        <div className="flex items-center justify-between border-b-2 border-white px-4 py-3">
-          <h2 className="mono text-xs font-medium">
-            <ScrambleText text="[ 01 ] SELECTED WORK" />
-          </h2>
-          <Link
-            to="/portfolio"
-            className="mono text-[10px] text-white/60 transition-colors duration-100 hover:text-white hover:underline"
-          >
-            SEE ALL {String(frames.length).padStart(2, "0")} →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 gap-0.5 bg-white sm:grid-cols-3">
-          {featuredFrames.slice(0, 3).map((frame, i) => (
-            <Reveal key={frame.title} delay={i * 0.09} flash>
+      {/* ══ GRID ════════════════════════════════════════════════
+          White container + 2px gaps = hard rules between every cell */}
+      <div className="grid auto-rows-[42vw] grid-cols-2 gap-0.5 border-b-2 border-white bg-white sm:auto-rows-[28vw] sm:grid-cols-3 lg:auto-rows-[19vw] lg:grid-cols-4">
+        {visible.map((frame, i) => {
+          const idx = frames.indexOf(frame);
+          return (
+            <Reveal
+              key={frame.src}
+              from={i % 2 === 0 ? "up" : "left"}
+              delay={(i % 4) * 0.06}
+              flash
+              className={`h-full ${spanFor[frame.size]}`}
+            >
               <FrameSlot
                 frame={frame}
-                index={frames.indexOf(frame)}
-                className="aspect-[4/5]"
+                index={idx}
+                layoutId={`frame-${idx}`}
+                className="h-full"
+                onClick={() => setSelected(idx)}
               />
             </Reveal>
-          ))}
-        </div>
-      </section>
+          );
+        })}
+      </div>
 
-      {/* ══ STATEMENT ═══════════════════════════════════════════ */}
-      <section className="border-b-2 border-white">
-        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
-          <div className="mono border-b-2 border-white px-4 py-4 text-[10px] text-white/50 md:border-b-0 md:border-r-2">
-            <ScrambleText text="[ 02 ] STATEMENT" />
-          </div>
-          <Reveal className="px-4 py-10 sm:py-16" from="left">
-            <p className="display-thin text-3xl leading-[1.05] sm:text-5xl lg:text-6xl">
-              I won&rsquo;t ask you to smile more,
-              <br />
-              <span className="display">or pose awkwardly.</span>
-              <br />
-              I&rsquo;ll only ask you to
-              <br />
-              <span className="display">be yourself.</span>
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      {/* ══ END NOTE ════════════════════════════════════════════ */}
+      <div className="mono flex flex-col gap-2 px-4 py-6 text-[10px] text-white/40 sm:flex-row sm:justify-between">
+        <span>END OF INDEX</span>
+        <span>ALL IMAGES © MAXX SLATER — DO NOT REPRODUCE</span>
+      </div>
 
-      {/* ══ INDEX SLABS ═════════════════════════════════════════ */}
-      <section>
-        <div className="mono border-b-2 border-white px-4 py-3 text-xs font-medium">
-          <ScrambleText text="[ 03 ] INDEX" />
-        </div>
-
-        {indexLinks.map(({ to, label, n, note }) => (
-          <Link
-            key={to}
-            to={to}
-            data-cursor={`GO ${n}`}
-            className="group relative flex items-center justify-between overflow-hidden border-b-2 border-white px-4 py-6 text-white transition-colors duration-150 hover:text-black sm:py-8"
+      {/* ══ LIGHTBOX ════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {current && selected !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12 }}
+            className="fixed inset-0 z-[160] flex flex-col bg-black"
+            onClick={() => setSelected(null)}
           >
-            {/* Hard fill sweeps in from the left on hover */}
-            <span className="absolute inset-0 -translate-x-full bg-white transition-transform duration-200 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:translate-x-0" />
-
-            <span className="relative flex items-baseline gap-4 sm:gap-8">
-              <span className="mono text-[10px] opacity-50">{n}</span>
-              <span className="display text-5xl transition-transform duration-200 group-hover:translate-x-3 sm:text-7xl lg:text-8xl">
-                {label}
+            {/* Top rail */}
+            <motion.div
+              initial={{ y: "-100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-b-2 border-white bg-black"
+            >
+              <span className="mono flex items-center px-4 py-3 text-[10px] text-white/60">
+                {String(selected + 1).padStart(2, "0")} /{" "}
+                {String(frames.length).padStart(2, "0")}
               </span>
-            </span>
-            <span className="mono relative hidden text-[10px] opacity-60 sm:block">
-              {note} →
-            </span>
-            <span className="mono relative text-lg sm:hidden" aria-hidden="true">
-              →
-            </span>
-          </Link>
-        ))}
-      </section>
-    </div>
+              <span className="mono hidden items-center px-4 text-[10px] text-white/60 sm:flex">
+                {current.title.toUpperCase()} — {current.category.toUpperCase()} /{" "}
+                {current.year}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(null);
+                }}
+                className="mono border-l-2 border-white px-5 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Close"
+              >
+                Close ✕
+              </button>
+            </motion.div>
+
+            {/* Stage */}
+            <div
+              className="flex flex-1 items-center justify-center overflow-hidden p-4 sm:p-10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Shared element: the clicked cell physically flies into place */}
+              <motion.div
+                layoutId={`frame-${selected}`}
+                transition={{ duration: 0.42, ease: [0.85, 0, 0.15, 1] }}
+                className="flex max-h-full w-full max-w-3xl items-center justify-center"
+              >
+                {current.src ? (
+                  <img
+                    src={current.src}
+                    alt={current.alt ?? current.title}
+                    className="max-h-[72vh] max-w-full border-2 border-white object-contain"
+                  />
+                ) : (
+                  <div className="hatch flex aspect-[4/3] w-full flex-col items-center justify-center gap-4 border-2 border-white">
+                    <span className="display text-7xl text-white/20 sm:text-9xl">
+                      {String(selected + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mono text-[10px] text-white/50">
+                      EMPTY SLOT — ADD A PATH IN src/data/portfolio.ts
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+
+            {/* Bottom rail */}
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ duration: 0.3, ease: [0.85, 0, 0.15, 1] }}
+              className="flex items-stretch justify-between border-t-2 border-white bg-black"
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(-1);
+                }}
+                className="mono border-r-2 border-white px-6 py-3 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Previous"
+              >
+                ← Prev
+              </button>
+              <span className="mono flex items-center px-4 text-[10px] text-white/40 sm:hidden">
+                {current.title.toUpperCase()}
+              </span>
+              <span className="mono hidden flex-1 items-center justify-center text-[10px] text-white/30 sm:flex">
+                USE ← → KEYS / ESC TO CLOSE
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(1);
+                }}
+                className="mono border-l-2 border-white px-6 py-3 text-xs transition-colors duration-100 hover:bg-white hover:text-black"
+                aria-label="Next"
+              >
+                Next →
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
   );
 }
-
-/* ── Spec row ─────────────────────────────────────────────── */
-function Spec({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-b-2 border-white px-4 py-4">
-      <p className="mono mb-1 text-[9px] text-white/40">{label}</p>
-      <p className="mono text-[11px] leading-relaxed text-white">{value}</p>
-    </div>
-  );
-}
-

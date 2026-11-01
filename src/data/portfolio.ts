@@ -38,6 +38,7 @@ export type Frame = {
 export const frames: Frame[] = [
   {
     src: "/images/polo1.JPG",
+    alt: "Three helmeted riders on polo ponies beside a wooded field.",
     title: "POLO1",
     category: "Portrait",
     year: "2026",
@@ -46,6 +47,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/polo2.JPG",
+    alt: "Equestrian equipment arranged in the open side of a white horse trailer.",
     title: "POLO2",
     category: "Portrait",
     year: "2026",
@@ -54,6 +56,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/polo3.JPG",
+    alt: "Two women in white dresses beside a car, framed by white flowers.",
     title: "POLO3",
     category: "Live",
     year: "2025",
@@ -61,6 +64,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/porsche1.JPG",
+    alt: "White Porsche parked on grass with its front wheel and headlights in view.",
     title: "PORSCHE1",
     category: "automotive",
     year: "2026",
@@ -69,6 +73,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/smoke.JPG",
+    alt: "Close-up of a hand holding a cigarette against a brick wall.",
     title: "SMOKE",
     category: "Live",
     year: "2024",
@@ -76,6 +81,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/self.JPG",
+    alt: "Shirtless man seated on a bench on a city sidewalk.",
     title: "SELF1",
     category: "Portrait",
     year: "2025",
@@ -84,6 +90,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/tracks.JPG",
+    alt: "Low-angle view along railroad tracks with a person standing on the rails.",
     title: "TRACKS1",
     category: "Portrait",
     year: "2026",
@@ -91,6 +98,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/polo4.JPG",
+    alt: "Two women in white dresses standing beside a car behind white flowers.",
     title: "POLO4",
     category: "Portrait",
     year: "2024",
@@ -98,7 +106,8 @@ export const frames: Frame[] = [
     featured: true,
   },
   {
-    src: "images/b1.jpg",
+    src: "/images/b1.jpg",
+    alt: "Person wearing a cap and a black sleeveless top in a brick alley.",
     title: "B1",
     category: "Portrait",
     year: "2026",
@@ -106,6 +115,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/OT.JPG",
+    alt: "Phone and cup reflected in a sunlit glass surface.",
     title: "Untitled",
     category: "Live",
     year: "2023",
@@ -113,6 +123,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/booth.JPG",
+    alt: "Illuminated telephone booth on a city sidewalk at night.",
     title: "Untitled",
     category: "Documentary",
     year: "2025",
@@ -120,6 +131,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/church.JPG",
+    alt: "Stone church entrance with arched doorways and steps.",
     title: "Untitled XI",
     category: "Live",
     year: "2023",
@@ -127,6 +139,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/portrait.jpg",
+    alt: "Man wearing a cap, open jacket, and shorts against a blue shutter.",
     title: "SELF2",
     category: "Portrait",
     year: "2026",
@@ -134,6 +147,7 @@ export const frames: Frame[] = [
   },
   {
     src: "/images/hayden1.jpg",
+    alt: "Model in a pink patterned outfit beside a green fence and trees.",
     title: "Hayden is on Instagram @haydenseger_modeling", 
     category: "Portrait",
     year:"2026",

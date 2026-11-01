@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import Seo from "./components/Seo";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import Cursor from "./components/Cursor";
@@ -22,6 +23,7 @@ export default function App() {
 
   return (
     <>
+      <Seo />
       <ScrollToTop />
       <BootSequence />
       <Cursor />

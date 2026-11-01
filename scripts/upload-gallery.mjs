@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { put } from "@vercel/blob";
 
 const gallery = "pink-pony-2026";
-const uploadFolder = `./gallery-upload/${gallery}`;
+const uploadFolder = "./gallery-upload/pink-pony-2026";
 
 const files = await readdir(uploadFolder);
 

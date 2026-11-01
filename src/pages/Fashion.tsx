@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ScrambleText from "../components/ScrambleText";
@@ -5,6 +6,7 @@ import Reveal from "../components/Reveal";
 
 type FashionFrame = {
   src: string;
+  alt: string;
   original: number;
   size: "standard" | "wide" | "tall" | "hero";
 };
@@ -12,18 +14,18 @@ type FashionFrame = {
 // Final fashion edit. The original numbers preserve the review sequence:
 // 1, 4, 7, 8, 12, 13, 14, 15, 16, 20, 22, 23.
 const fashionFrames: FashionFrame[] = [
-  { src: "/images/fashion/fashion-01.jpg", original: 1, size: "tall" },
-  { src: "/images/fashion/fashion-02.jpg", original: 4, size: "standard" },
-  { src: "/images/fashion/fashion-03.jpg", original: 7, size: "standard" },
-  { src: "/images/fashion/fashion-04.jpg", original: 8, size: "wide" },
-  { src: "/images/fashion/fashion-05.jpg", original: 12, size: "standard" },
-  { src: "/images/fashion/fashion-06.jpg", original: 13, size: "tall" },
-  { src: "/images/fashion/fashion-07.jpg", original: 14, size: "standard" },
-  { src: "/images/fashion/fashion-08.jpg", original: 15, size: "wide" },
-  { src: "/images/fashion/fashion-09.jpg", original: 16, size: "standard" },
-  { src: "/images/fashion/fashion-10.jpg", original: 20, size: "hero" },
-  { src: "/images/fashion/fashion-11.jpg", original: 22, size: "standard" },
-  { src: "/images/fashion/fashion-12.jpg", original: 23, size: "hero" },
+  { src: "/images/fashion/fashion-01.jpg", alt: "Black-and-white portrait of a man lowering his sunglasses.", original: 1, size: "tall" },
+  { src: "/images/fashion/fashion-02.jpg", alt: "Model in a colorful flowing dress on outdoor stairs between metal railings.", original: 4, size: "standard" },
+  { src: "/images/fashion/fashion-03.jpg", alt: "Model wearing a bright outfit standing in a narrow brick alley.", original: 7, size: "standard" },
+  { src: "/images/fashion/fashion-04.jpg", alt: "Model in a coral outfit posing against a brightly painted geometric mural.", original: 8, size: "wide" },
+  { src: "/images/fashion/fashion-05.jpg", alt: "Red-haired model in a pink top posing beside a white wall.", original: 12, size: "standard" },
+  { src: "/images/fashion/fashion-06.jpg", alt: "Red-haired model looking over her shoulder in a pink outfit beside flowers.", original: 13, size: "tall" },
+  { src: "/images/fashion/fashion-07.jpg", alt: "Black-and-white portrait of a woman with long hair beside a brick wall.", original: 14, size: "standard" },
+  { src: "/images/fashion/fashion-08.jpg", alt: "Three women in pink and white outfits posing beside flowers outdoors.", original: 15, size: "wide" },
+  { src: "/images/fashion/fashion-09.jpg", alt: "Woman looking toward the camera from the driver’s seat of a car.", original: 16, size: "standard" },
+  { src: "/images/fashion/fashion-10.jpg", alt: "Close-up of a man adjusting dark sunglasses against a white wall.", original: 20, size: "hero" },
+  { src: "/images/fashion/fashion-11.jpg", alt: "Black-and-white portrait of a man in glasses looking downward.", original: 22, size: "standard" },
+  { src: "/images/fashion/fashion-12.jpg", alt: "Black-and-white portrait of a man in a sleeveless top with his hand over his head.", original: 23, size: "hero" },
 ];
 
 const spans: Record<FashionFrame["size"], string> = {
@@ -74,7 +76,7 @@ export default function Fashion() {
         </h1>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <p className="mono max-w-xl text-[11px] leading-relaxed text-white/60">
-            SELECTED FASHION, EDITORIAL + EVENT WORK. PHOTOGRAPHED AND CURATED BY MAXX SLATER.
+            Fashion and editorial photography by Maxx Slater, based in Columbus, Ohio. Selected creative portraits, fashion, and event work.
           </p>
           <span className="mono text-[10px] text-white/40">12 SELECTED FRAMES</span>
         </div>
@@ -98,7 +100,9 @@ export default function Fashion() {
             >
               <img
                 src={frame.src}
-                alt={`Fashion photograph ${index + 1} by Maxx Slater`}
+                alt={frame.alt}
+                loading={index < 2 ? "eager" : "lazy"}
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.85,0,0.15,1)] group-hover:scale-[1.025]"
               />
               <div className="absolute inset-x-0 bottom-0 flex translate-y-full items-center justify-between border-t border-white/70 bg-black/90 px-3 py-2 transition-transform duration-200 group-hover:translate-y-0">
@@ -110,6 +114,17 @@ export default function Fashion() {
         ))}
       </div>
 
+      <section className="border-b-2 border-white px-4 py-10 sm:px-8">
+        <h2 className="display text-3xl sm:text-5xl">Fashion &amp; editorial photography in Columbus</h2>
+        <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/70">
+          Planning a model portfolio update, an editorial concept, or images for your creative brand?
+          Tell me what you are making, how you want the photographs to feel, and where they will be used.
+          We can discuss the location, visual direction, and scope of your session.
+        </p>
+        <Link to="/contact" className="mono mt-6 inline-block border-2 border-white px-6 py-4 text-xs hover:bg-white hover:text-black">
+          Inquire about a shoot →
+        </Link>
+      </section>
       <div className="mono flex flex-col gap-2 px-4 py-6 text-[10px] text-white/40 sm:flex-row sm:justify-between">
         <span>END OF FASHION INDEX</span>
         <span>ALL IMAGES © MAXX SLATER — DO NOT REPRODUCE</span>
@@ -148,7 +163,7 @@ export default function Fashion() {
                 transition={{ duration: 0.4, ease: [0.85, 0, 0.15, 1] }}
                 className="flex h-full w-full items-center justify-center"
               >
-                <img src={current.src} alt={`Fashion photograph ${selected + 1}`} className="max-h-[78vh] max-w-full object-contain" />
+                <img src={current.src} alt={current.alt} className="max-h-[78vh] max-w-full object-contain" />
               </motion.div>
             </div>
 

@@ -6,6 +6,50 @@
   "installCommand": "npm install",
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/fashion",
+      "destination": "/fashion.html"
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/portfolio.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/clients",
+      "destination": "/clients.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/galleries",
+      "destination": "/galleries.html"
+    },
+    {
+      "source": "/galleries/pink-pony-2026",
+      "destination": "/galleries/pink-pony-2026.html"
+    },
+    {
+      "source": "/galleries/polo-2026",
+      "destination": "/galleries/polo-2026.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
