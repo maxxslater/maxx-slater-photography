@@ -11,8 +11,7 @@ const navLinks = [
   { to: "/galleries", label: "Galleries", n: "04" },
   { to: "/about", label: "About", n: "05" },
   { to: "/clients", label: "Clients", n: "06" },
-  { to: "/contact", label: "Booking", n: "07" },
-];
+  { to: "/booking", label: "Booking", n: "07" },];
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -123,7 +122,7 @@ export default function Layout() {
           className="border-t-0"
         />
         <Link
-          to="/contact"
+          to="/booking"
           data-cursor="BOOK"
           className="group relative block overflow-hidden border-b-2 border-white px-4 py-10 text-white transition-colors duration-150 hover:text-black sm:py-16"
         >
@@ -141,7 +140,7 @@ export default function Layout() {
             <FooterLink to="/terms">Terms of Service</FooterLink>
             <FooterLink to="/privacy">Privacy Policy</FooterLink>
           </FooterCol>
-          <FooterCol title="Contact">
+          <FooterCol title="Booking">
             <a href="mailto:maxxslaterphoto@proton.me" className="mono block text-[11px] text-white/70 transition-colors duration-100 hover:text-white hover:underline">maxxslaterphoto@proton.me</a>
             <span className="mono block text-[11px] text-white/70">COLUMBUS, OHIO — USA</span>
           </FooterCol>

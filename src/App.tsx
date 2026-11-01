@@ -9,6 +9,7 @@ import ProgressRail from "./components/ProgressRail";
 import PageTransition from "./components/PageTransition";
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Booking from "./pages/Booking";
 import Portfolio from "./pages/Portfolio";
 import Fashion from "./pages/Fashion";
 import Contact from "./pages/Contact";
@@ -37,7 +38,7 @@ export default function App() {
         <Routes location={location} key={location.pathname}>
           <Route element={<Layout />}>
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-            <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+            <Route path="/about" element={<About />} />
             <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
             <Route path="/fashion" element={<PageTransition><Fashion /></PageTransition>} />
             <Route path="/galleries" element={<PageTransition><Galleries /></PageTransition>} />
@@ -57,7 +58,9 @@ export default function App() {
                 </PageTransition>
               }
             />
-            <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/booking" element={<PageTransition><Booking /></PageTransition>} />
             <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
             <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
             <Route path="/clients" element={<PageTransition><Clients /></PageTransition>} />
