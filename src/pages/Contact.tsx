@@ -22,7 +22,7 @@ export default function Contact() {
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone || "Not provided"}\n\nMessage:\n${message}`
     );
 
-    window.location.href = `mailto:maxxslaterphoto@proton.me?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:maxxslaterphoto@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
   }
 
@@ -124,7 +124,7 @@ export default function Contact() {
                 </p>
                 <p className="mono mt-6 text-[11px] leading-relaxed text-white/60">
                   YOUR MAIL CLIENT SHOULD HAVE OPENED. IF NOT, WRITE DIRECTLY TO
-                  MAXXSLATERPHOTO@PROTON.ME — I&rsquo;LL GET BACK TO YOU SHORTLY.
+                  MAXXSLATERPHOTO@GMAIL.COM — I&rsquo;LL GET BACK TO YOU SHORTLY.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -147,7 +147,7 @@ export default function Contact() {
             </p>
           </Reveal>
 
-          <SideRow label="Email" value="maxxslaterphoto@proton.me" href="mailto:maxxslaterphoto@p" />
+          <SideRow label="Email" value="maxxslaterphoto@gmail.com" href="mailto:maxxslaterphoto@p" />
           <SideRow label="Location" value="Columbus, Ohio — USA" />
           <SideRow label="Response time" value="Within 48 hours" />
           <SideRow label="Booking" value="Retainer secures the date" />

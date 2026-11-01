@@ -26,6 +26,10 @@
       "destination": "/contact.html"
     },
     {
+      "source": "/booking",
+      "destination": "/booking.html"
+    },
+    {
       "source": "/clients",
       "destination": "/clients.html"
     },
