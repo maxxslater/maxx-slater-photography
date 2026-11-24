@@ -5,9 +5,20 @@ const pages = JSON.parse(await readFile("src/data/seo.json", "utf8"));
 const server = await createServer({ server: { middlewareMode: true }, appType: "custom" });
 const escape = value => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 try {
-  const { render, metadata, origin } = await server.ssrLoadModule("/src/entry-server.tsx");
+  const { render, metadata, origin, babyloveArticles } = await server.ssrLoadModule("/src/entry-server.tsx");
   const template = await readFile("dist/index.html", "utf8");
-  for (const route of [...Object.keys(pages), "/galleries", "/galleries/pink-pony-2026", "/galleries/polo-2026"]) {
+  const blogRoutes = [
+    "/blog",
+    ...babyloveArticles.map((article) => `/blog/${article.slug}`),
+  ];
+  const routes = new Set([
+    ...Object.keys(pages),
+    "/galleries",
+    "/galleries/pink-pony-2026",
+    "/galleries/polo-2026",
+    ...blogRoutes,
+  ]);
+  for (const route of routes) {
     const data = metadata(route);
     const head = `<title>${escape(data.title)}</title>
 <meta name="description" content="${escape(data.description)}">
@@ -24,4 +35,14 @@ try {
     await writeFile(destination, html);
     console.log(`Prerendered ${route}`);
   }
+
+  const sitemapPath = "dist/sitemap.xml";
+  let sitemap = await readFile(sitemapPath, "utf8");
+  for (const article of babyloveArticles) {
+    const url = `${origin}/blog/${article.slug}`;
+    if (!sitemap.includes(`<loc>${url}</loc>`)) {
+      sitemap = sitemap.replace("</urlset>", `  <url><loc>${url}</loc></url>\n</urlset>`);
+    }
+  }
+  await writeFile(sitemapPath, sitemap);
 } finally { await server.close(); }

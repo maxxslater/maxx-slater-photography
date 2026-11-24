@@ -24,6 +24,65 @@ body {
   font-family: var(--font-sans);
 }
 
+.blog-content {
+  color: rgb(255 255 255 / 82%);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.blog-content :is(h1, h2, h3, h4) {
+  margin: 2.5rem 0 1rem;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.blog-content h2 {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+}
+
+.blog-content h3 {
+  font-size: clamp(1.35rem, 4vw, 2rem);
+}
+
+.blog-content p,
+.blog-content ul,
+.blog-content ol,
+.blog-content blockquote {
+  margin: 1.25rem 0;
+}
+
+.blog-content :is(ul, ol) {
+  padding-left: 1.5rem;
+}
+
+.blog-content ul {
+  list-style: disc;
+}
+
+.blog-content ol {
+  list-style: decimal;
+}
+
+.blog-content a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-content img {
+  height: auto;
+  margin: 2rem 0;
+  max-width: 100%;
+}
+
+.blog-content blockquote {
+  border-left: 2px solid #fff;
+  padding-left: 1rem;
+  color: rgb(255 255 255 / 65%);
+}
+
 /* Hard, unapologetic selection */
 ::selection {
   background-color: #fff;

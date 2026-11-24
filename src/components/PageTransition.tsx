@@ -28,6 +28,7 @@ const labels: Record<string, string> = {
   "/portfolio": "Portfolio",
   "/about": "About",
   "/contact": "Booking",
+  "/blog": "Journal",
   "/terms": "Terms",
   "/privacy": "Privacy",
 };

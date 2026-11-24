@@ -18,6 +18,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Galleries from "./pages/Galleries";
 import Gallery from "./pages/Gallery";
+import { Blog, BlogArticle } from "./pages/Blog";
 
 export default function App() {
   const location = useLocation();
@@ -42,6 +43,8 @@ export default function App() {
             <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
             <Route path="/fashion" element={<PageTransition><Fashion /></PageTransition>} />
             <Route path="/galleries" element={<PageTransition><Galleries /></PageTransition>} />
+            <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+            <Route path="/blog/:slug" element={<PageTransition><BlogArticle /></PageTransition>} />
             <Route
               path="/galleries/pink-pony-2026"
               element={

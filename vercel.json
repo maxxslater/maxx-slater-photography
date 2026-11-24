@@ -54,6 +54,14 @@
       "destination": "/galleries/polo-2026.html"
     },
     {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/:slug.html"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

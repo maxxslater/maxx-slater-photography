@@ -1,8 +1,21 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import pages from "../data/seo.json";
+import { babyloveArticles } from "../data/babylove";
 export const origin = "https://www.maxxslater.com";
 export function metadata(path: string) {
+  const articleSlug = path.startsWith("/blog/") ? path.slice("/blog/".length) : "";
+  const article = articleSlug
+    ? babyloveArticles.find((item) => item.slug === articleSlug)
+    : undefined;
+  if (article) {
+    return {
+      title: `${article.title} | Maxx Slater`,
+      description: article.meta_description || article.excerpt,
+      url: origin + path,
+      noindex: false,
+    };
+  }
   const entry = pages[path as keyof typeof pages];
   return { title: entry?.[0] ?? "Client Gallery | Maxx Slater Photography",
     description: entry?.[1] ?? "Private client galleries from Maxx Slater Photography.",

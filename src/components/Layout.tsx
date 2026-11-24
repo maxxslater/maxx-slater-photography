@@ -9,9 +9,11 @@ const navLinks = [
   { to: "/portfolio", label: "Portfolio", n: "02" },
   { to: "/fashion", label: "Fashion", n: "03" },
   { to: "/galleries", label: "Galleries", n: "04" },
-  { to: "/about", label: "About", n: "05" },
-  { to: "/clients", label: "Clients", n: "06" },
-  { to: "/booking", label: "Booking", n: "07" },];
+  { to: "/blog", label: "Journal", n: "05" },
+  { to: "/about", label: "About", n: "06" },
+  { to: "/clients", label: "Clients", n: "07" },
+  { to: "/booking", label: "Booking", n: "08" },
+];
 
 export default function Layout() {
   const { pathname } = useLocation();

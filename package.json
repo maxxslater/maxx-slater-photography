@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "node scripts/build.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -26,8 +26,10 @@
     "@types/node": "22.19.17",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "@types/sanitize-html": "^2.16.2",
     "@vercel/node": "^13.0.0",
     "@vitejs/plugin-react": "5.1.1",
+    "sanitize-html": "^2.18.2",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",
     "vercel": "^59.16.0",

@@ -26,7 +26,7 @@ src/
 │  ├─ LegalDoc.tsx            shared shell for Terms / Privacy
 │  ├─ PageTransition.tsx      hard clip-path wipe between routes
 │  └─ ScrollToTop.tsx
-└─ pages/                     Home, Portfolio, About, Contact, Terms, Privacy
+└─ pages/                     Home, Portfolio, Blog, About, Contact, Terms, Privacy
 ```
 
 ## Adding photos
@@ -51,6 +51,23 @@ Leave `src: ""` and the slot stays as a hatched, numbered placeholder — the
 layout still reads correctly while you're filling the index. Order in the array
 is order on the page, and `category` values automatically populate the
 portfolio filter bar.
+
+## BabyLoveGrowth articles
+
+The Journal at `/blog` syncs BabyLoveGrowth articles during each production
+build. The API key is used only by the build script; it is never included in
+the browser bundle.
+
+For local builds, add the key to the ignored `.env.local` file:
+
+```env
+BABYLOVE_API_KEY=your_api_key
+```
+
+For Vercel, add `BABYLOVE_API_KEY` under **Project Settings → Environment
+Variables** for each deployment environment. Redeploy after adding or rotating
+the key. If the key is missing, the build prints a warning and publishes the
+Journal without articles.
 
 ## Type system
 
