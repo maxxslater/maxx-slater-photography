@@ -69,6 +69,13 @@ Variables** for each deployment environment. Redeploy after adding or rotating
 the key. If the key is missing, the build prints a warning and publishes the
 Journal without articles.
 
+## Booking confirmation
+
+The post-booking confirmation page is `/booking-confirmed`. Configure the
+booking provider to redirect customers there after a completed appointment, then
+use a page-visit conversion rule for that URL in Google Ads or Google Tag
+Manager. Do not use this URL as the ad's initial landing page.
+
 ## Type system
 
 | Class           | Use                                              |

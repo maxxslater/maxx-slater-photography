@@ -30,6 +30,10 @@
       "destination": "/booking.html"
     },
     {
+      "source": "/booking-confirmed",
+      "destination": "/booking-confirmed.html"
+    },
+    {
       "source": "/clients",
       "destination": "/clients.html"
     },

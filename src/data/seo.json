@@ -38,5 +38,9 @@
   "/booking": [
     "Book a Photography Session | Maxx Slater Photography",
     "Inquire about portrait, fashion, editorial, couples, and event photography sessions with Maxx Slater in Columbus, Ohio."
+  ],
+  "/booking-confirmed": [
+    "Booking Confirmed | Maxx Slater Photography",
+    "Your photography appointment with Maxx Slater has been booked. Check your Square confirmation for appointment details and next steps."
   ]
 }

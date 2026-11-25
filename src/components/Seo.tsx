@@ -19,7 +19,7 @@ export function metadata(path: string) {
   const entry = pages[path as keyof typeof pages];
   return { title: entry?.[0] ?? "Client Gallery | Maxx Slater Photography",
     description: entry?.[1] ?? "Private client galleries from Maxx Slater Photography.",
-    url: origin + path, noindex: !entry || ["/clients", "/terms", "/privacy"].includes(path) };
+    url: origin + path, noindex: !entry || ["/clients", "/terms", "/privacy", "/booking-confirmed"].includes(path) };
 }
 export default function Seo() {
   const { pathname } = useLocation();

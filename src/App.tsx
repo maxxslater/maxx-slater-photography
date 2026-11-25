@@ -19,6 +19,7 @@ import Privacy from "./pages/Privacy";
 import Galleries from "./pages/Galleries";
 import Gallery from "./pages/Gallery";
 import { Blog, BlogArticle } from "./pages/Blog";
+import BookingConfirmed from "./pages/BookingConfirmed";
 
 export default function App() {
   const location = useLocation();
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/booking" element={<PageTransition><Booking /></PageTransition>} />
+            <Route path="/booking-confirmed" element={<PageTransition><BookingConfirmed /></PageTransition>} />
             <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
             <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
             <Route path="/clients" element={<PageTransition><Clients /></PageTransition>} />
